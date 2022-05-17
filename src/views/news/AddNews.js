@@ -22,7 +22,13 @@ import {
 
 const { Option } = Select;
 
-const AddNews = ({ openModal, handleModal, getNews, Projects }) => {
+const AddNews = ({
+  openModal,
+  handleModal,
+  getNews,
+  Projects,
+  disableDates,
+}) => {
   useEffect(() => {
     getProjects();
   }, []);
@@ -31,13 +37,14 @@ const AddNews = ({ openModal, handleModal, getNews, Projects }) => {
     end_date: "",
     news_date: "",
     selling_price: "",
-    total_price: "",
+    total_cost: "",
   });
 
   let [projects, setProjects] = useState([]);
   const [pictures, setPictures] = useState({
     files: [],
   });
+
   const handleInput = (e) => {
     setNews({ ...news, [e.target.name]: e.target.value });
   };
@@ -63,8 +70,41 @@ const AddNews = ({ openModal, handleModal, getNews, Projects }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    //  if(pictures.length<0 || parseInt(news.selling_price)
-    api("post", "/news", news).then((res) => {
+    let formData = new FormData();
+    if (news.project == "") {
+      return toast.error("Please  select project ");
+    }
+    if (news.news_date == "") {
+      return toast.error("News Date is required");
+    }
+    formData.append("project", news.project);
+    formData.append("news_date", news.news_date);
+
+    if (
+      news.end_date == "" &&
+      news.selling_price == "" &&
+      news.total_cost == "" &&
+      pictures.files.length < 1
+    ) {
+      return toast.error("Please  add one more field atleast ");
+    }
+
+    if (pictures.files.length > 0) {
+      pictures.files.map((e) => {
+        formData.append("files", e);
+      });
+    }
+    if (news.end_date) {
+      formData.append("end_date", news.end_date);
+    }
+
+    if (news.selling_price) {
+      formData.append("selling_price", news.selling_price);
+    }
+    if (news.total_cost) {
+      formData.append("total_cost", news.total_cost);
+    }
+    api("post", "/news", formData).then((res) => {
       toast.success("News added successfully");
       getNews();
       handleModal();
@@ -138,6 +178,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects }) => {
                           type="date"
                           value={moment(news?.news_date).format("YYYY-MM-DD")}
                           name="news_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>
@@ -157,6 +198,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects }) => {
                           type="date"
                           value={moment(news?.end_date).format("YYYY-MM-DD")}
                           name="end_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>
