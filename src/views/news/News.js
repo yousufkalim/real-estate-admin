@@ -59,6 +59,20 @@ const Users = () => {
     getAllNews();
   }, []);
 
+  const disableDates = () => {
+    var today, dd, mm, yyyy;
+    today = new Date();
+    dd = today.getDate();
+    mm = today.getMonth() + 1;
+    yyyy = today.getFullYear();
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    if (dd < 10) {
+      dd = "0";
+    }
+    return yyyy + "-" + mm + "-" + dd;
+  };
   const getAllNews = async () => {
     await api("get", "/news").then((data) => {
       setAllNews(data?.news);
@@ -71,6 +85,7 @@ const Users = () => {
 
   const handleEditModal = (item) => {
     if (item) {
+      // return console.log(item, "n");
       setNews({
         _id: item?._id,
         total_cost: item.total_cost ? item.total_cost : "",
@@ -79,9 +94,9 @@ const Users = () => {
         news_date: item?.news_date ? item.news_date : "",
         project: item?.project?.name,
         project_id: item?.project?._id,
-        // pictures: item?.pictures?.map((pic) => {
-        //   return pic;
-        // }),
+        pictures: item?.pictures?.map((pic) => {
+          return pic;
+        }),
       });
     }
     setEditModal((open) => !open);
@@ -124,7 +139,6 @@ const Users = () => {
                     <th scope="col">Project Name </th>
                     <th cope="col">New Total Cost</th>
                     <th scope="col">New Selling Price</th>
-                    <th scope="col">New End Date</th>
                     <th scope="col">News Date</th>
                     <th scope="col">New End Date</th>
                     <th scope="col" />
@@ -135,10 +149,21 @@ const Users = () => {
                     return (
                       <tr>
                         <td>{item?.project?.name}</td>
-                        <td>{item?.total_cost}</td>
-                        <td>{item?.selling_price}</td>
-                        <td>{moment(item?.news_date).format("yyyy-mm-dd")}</td>
-                        <td>{moment(item?.end_date).format("yyyy-mm-dd")}</td>
+                        <td>{item?.total_cost ? item.total_cost : "_"}</td>
+                        <td>
+                          {item?.selling_price ? item.selling_price : "_"}
+                        </td>
+                        <td>
+                          {item?.news_date
+                            ? moment(item.news_date).format("yyyy-mm-dd")
+                            : "_"}
+                        </td>
+                        <td>
+                          {item?.end_date
+                            ? moment(item.end_date).format("yyyy-mm-dd")
+                            : "_"}
+                        </td>
+
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
@@ -181,6 +206,7 @@ const Users = () => {
             openModal={openModal}
             handleModal={handleModal}
             getNews={getAllNews}
+            disableDates={disableDates}
           />
         )}
         {editModal && (
@@ -189,6 +215,7 @@ const Users = () => {
             handleModal={handleEditModal}
             news={news}
             setNews={setNews}
+            disableDates={disableDates}
             getAllNews={getAllNews}
           />
         )}
