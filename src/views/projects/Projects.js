@@ -62,6 +62,21 @@ const Projects = () => {
     getProjects();
   }, []);
 
+  const disableDates = () => {
+    var today, dd, mm, yyyy;
+    today = new Date();
+    dd = today.getDate();
+    mm = today.getMonth() + 1;
+    yyyy = today.getFullYear();
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    if (dd < 10) {
+      dd = "0";
+    }
+    return yyyy + "-" + mm + "-" + dd;
+  };
+
   const getProjects = async () => {
     return await api("get", "/projects").then((data) => {
       setProjects(data.projects);
@@ -254,6 +269,7 @@ const Projects = () => {
             openModal={openModal}
             handleModal={handleModal}
             getProjects={getProjects}
+            disableDates={disableDates}
           />
         )}
         {editModal && (
@@ -263,6 +279,7 @@ const Projects = () => {
             project={project}
             setProject={setProject}
             getProjects={getProjects}
+            disableDates={disableDates}
           />
         )}
       </Container>

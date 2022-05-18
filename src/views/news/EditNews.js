@@ -21,7 +21,14 @@ import {
 
 const { Option } = Select;
 
-const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
+const EditNews = ({
+  openModal,
+  handleModal,
+  news,
+  setNews,
+  getAllNews,
+  disableDates,
+}) => {
   const [projects, setProjects] = useState([]);
   const [pictures, setPictures] = useState({
     files: [],
@@ -47,16 +54,17 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
     if (news.end_date) {
       formData.append("end_date", news.end_date);
     }
-
     if (news.selling_price) {
       formData.append("selling_price", news.selling_price);
     }
     if (news.total_cost) {
       formData.append("total_cost", news.total_cost);
     }
-    console.log(news);
-    // console.log(formData);
-
+    if (news.pictures.length > 0) {
+      news.pictures.map((e) => {
+        formData.append("files", e);
+      });
+    }
     api("put", `/news/${news?._id}`, formData).then((res) => {
       toast.success("News edited successfully");
       getAllNews();
@@ -66,7 +74,6 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
 
   return (
     <>
-      {console.log(news, "n")}
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
           Edit a news
@@ -78,25 +85,38 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
                 <div className="pl-lg-4">
                   {/* <Row>
                     <Col lg="12">
-                      <FormGroup style={{ width: "60%" }}>
-                        <label className="form-control-label">
-                          Add Main Picture <View url={news?.pictures} />
-                        </label>
-                        <FilePicker
-                          lableClassName="form-control-label"
-                          htmlFor="input-image"
-                          InputClassName="form-control-file form"
-                          InputId="input-image"
-                          InputName="pictures"
-                          value={news?.pictures}
-                          onChange={handleFileChange}
-                        ></FilePicker>
-                      </FormGroup>
-                      <div>
-                        {pictures?.files?.map((val) => (
-                          <span> {val?.name} </span>
-                        ))}
-                      </div>
+                      {news?.pictures?.length < 1 ? (
+                        <>
+                          <FormGroup style={{ width: "60%" }}>
+                            <label className="form-control-label">
+                              Add Main Picture <View url={news?.pictures} />
+                            </label>
+                            <FilePicker
+                              lableClassName="form-control-label"
+                              htmlFor="input-image"
+                              InputClassName="form-control-file form"
+                              InputId="input-image"
+                              InputName="pictures"
+                              value={news?.picturess}
+                              onChange={handleFileChange}
+                            ></FilePicker>
+                          </FormGroup>
+                          <div>
+                            {pictures?.files?.map((val) => (
+                              <span> {val?.name} </span>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <div>
+                          {news?.pictures?.map((val) => (
+                            <span>
+                              {" "}
+                              {val?.split?("-").pop()}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </Col>
                   </Row> */}
                   <Row>
@@ -131,6 +151,7 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
                           type="date"
                           value={news?.news_date?.split("T")[0]}
                           name="news_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>
@@ -145,6 +166,7 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews }) => {
                           type="date"
                           value={news?.end_date?.split("T")[0]}
                           name="end_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>

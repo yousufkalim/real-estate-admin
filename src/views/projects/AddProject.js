@@ -21,7 +21,7 @@ import {
 import moment from "moment";
 const { Option } = Select;
 
-const AddProject = ({ openModal, handleModal, getProjects }) => {
+const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
   let [project, setProject] = useState({
     dispaly_picture: "",
     name: "",
@@ -208,6 +208,7 @@ const AddProject = ({ openModal, handleModal, getProjects }) => {
                           type="date"
                           value={moment(project?.end_date).format("YYYY-MM-DD")}
                           name="end_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>

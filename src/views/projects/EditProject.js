@@ -25,6 +25,7 @@ const EditProject = ({
   project,
   setProject,
   getProjects,
+  disableDates,
 }) => {
   const handleInput = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
@@ -188,7 +189,7 @@ const EditProject = ({
                           id="input-date"
                           placeholder={"Select Dates"}
                           type="date"
-                          value={project?.start_date.split("T")[0]}
+                          value={project?.start_date?.split("T")[0]}
                           name="start_date"
                           onChange={handleInput}
                         />
@@ -207,8 +208,9 @@ const EditProject = ({
                           id="input-date"
                           placeholder={"Select Dates"}
                           type="date"
-                          value={project.end_date.split("T")[0]}
+                          value={project?.end_date?.split("T")[0]}
                           name="end_date"
+                          min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>
