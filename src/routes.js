@@ -32,7 +32,7 @@ const routes = [
   },
   {
     path: "/users",
-    name: "All Users",
+    name: "All  Investors",
     icon: "ni ni-single-02 text-primary",
     component: Users,
     layout: "/admin",

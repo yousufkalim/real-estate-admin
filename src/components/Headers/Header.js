@@ -22,8 +22,12 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 const Header = () => {
-  const [projects, setProjects] = useState("");
-  const [investors, setInvestors] = useState("");
+  const [projects, setProjects] = useState(
+    localStorage.getItem("projects") || ""
+  );
+  const [investors, setInvestors] = useState(
+    localStorage.getItem("investors") || ""
+  );
   useEffect(async () => {
     await api("get", "/projects").then((data) => {
       setProjects(data?.projects.length);
@@ -32,6 +36,10 @@ const Header = () => {
       setInvestors(data?.investors.length);
     });
   }, []);
+  useEffect(() => {
+    localStorage.setItem("projects", projects);
+    localStorage.setItem("investors", investors);
+  }, [projects, investors]);
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">

@@ -96,7 +96,7 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                       <FormGroup style={{ width: "60%" }}>
                         <label className="form-control-label">
                           Add Main Picture{" "}
-                          <View url={project?.dispaly_picture} />
+                          {/* <View url={project?.dispaly_picture} /> */}
                         </label>
                         <FilePicker
                           lableClassName="form-control-label"
