@@ -41,6 +41,9 @@ const AddAssignProject = ({
     if (project.shares == "") {
       return toast.error("Shares Required");
     }
+    if (parseInt(project.shares) < 1) {
+      return toast.error("Shares should be greater than 0");
+    }
     if (parseInt(project.remaining_shares) < parseInt(project.shares)) {
       return toast.error("Shares should be lesser than remaining shares");
     }
