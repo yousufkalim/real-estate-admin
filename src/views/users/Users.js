@@ -65,8 +65,7 @@ const Users = () => {
 
   const getUsers = async () => {
     const data = await api("get", "/investors");
-
-    updateStore({ users: data.investors });
+    updateStore({ users: data.investors, investors: data.investors.length });
   };
 
   const handleModal = () => {

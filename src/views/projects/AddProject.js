@@ -4,6 +4,7 @@ import api from "../../api";
 import { Select } from "antd";
 import View from "../../components/views";
 import FilePicker from "../../components/FilePicker";
+import { UpdateStore } from "StoreContext";
 import {
   Modal,
   ModalBody,
@@ -20,8 +21,8 @@ import {
 // core components
 import moment from "moment";
 const { Option } = Select;
-
 const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
+  const updateStore = UpdateStore();
   let [project, setProject] = useState({
     dispaly_picture: "",
     name: "",
@@ -79,7 +80,6 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
       handleModal();
     });
   };
-
   return (
     <>
       <Modal isOpen={openModal} size="xl" centered>
