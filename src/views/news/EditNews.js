@@ -83,42 +83,38 @@ const EditNews = ({
             <Col>
               <Form>
                 <div className="pl-lg-4">
-                  {/* <Row>
+                  <Row>
                     <Col lg="12">
-                      {news?.pictures?.length < 1 ? (
+                      {news?.pictures?.length > 0 ? (
                         <>
-                          <FormGroup style={{ width: "60%" }}>
+                          <FormGroup style={{ width: "100%" }}>
                             <label className="form-control-label">
-                              Add Main Picture <View url={news?.pictures} />
+                              News Pictures
                             </label>
-                            <FilePicker
-                              lableClassName="form-control-label"
-                              htmlFor="input-image"
-                              InputClassName="form-control-file form"
-                              InputId="input-image"
-                              InputName="pictures"
-                              value={news?.picturess}
-                              onChange={handleFileChange}
-                            ></FilePicker>
+                            <br></br>
+                            <label
+                              className="form-control-label"
+                              style={{ display: "flex" }}
+                            >
+                              {news.pictures.map((file) => (
+                                <>
+                                  <h5>
+                                    {file.split("-").pop()}
+                                    {""}
+                                  </h5>
+                                  <View url={file} />
+                                </>
+                              ))}
+                            </label>
                           </FormGroup>
-                          <div>
-                            {pictures?.files?.map((val) => (
-                              <span> {val?.name} </span>
-                            ))}
-                          </div>
                         </>
                       ) : (
-                        <div>
-                          {news?.pictures?.map((val) => (
-                            <span>
-                              {" "}
-                              {val?.split?("-").pop()}
-                            </span>
-                          ))}
-                        </div>
+                        <label className="form-control-label">
+                          No Picture Selected
+                        </label>
                       )}
                     </Col>
-                  </Row> */}
+                  </Row>
                   <Row>
                     <Col lg="4" style={{ margin: "auto" }}>
                       <FormGroup>
@@ -181,7 +177,7 @@ const EditNews = ({
                           required={true}
                           placeholder="Enter news's total_cost here"
                           type="number"
-                          value={news.total_cost}
+                          value={news?.total_cost}
                           name="total_cost"
                           onChange={handleInput}
                         />
@@ -197,7 +193,7 @@ const EditNews = ({
                           required={true}
                           placeholder="Enter news's selling_price here"
                           type="number"
-                          value={news.selling_price}
+                          value={news?.selling_price}
                           name="selling_price"
                           onChange={handleInput}
                         />

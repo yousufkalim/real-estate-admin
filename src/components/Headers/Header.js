@@ -19,19 +19,31 @@
 // reactstrap components
 import api from "api";
 import { useEffect, useState } from "react";
+import { Store, UpdateStore } from "StoreContext";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 const Header = () => {
-  const [projects, setProjects] = useState("");
-  const [investors, setInvestors] = useState("");
+  const updateStore = UpdateStore();
+  const store = Store();
   useEffect(async () => {
     await api("get", "/projects").then((data) => {
-      setProjects(data?.projects.length);
+      updateStore({
+        projects: data?.projects.length,
+      });
     });
     await api("get", "/investors").then((data) => {
-      setInvestors(data?.investors.length);
+      updateStore({
+        investors: data?.investors.length,
+      });
     });
   }, []);
+
+  // useEffect(() => {
+  //   updateStore({
+  //     projects: projects,
+  //     investors: investors,
+  //   });
+  // }, [projects, investors]);
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -51,7 +63,7 @@ const Header = () => {
                           Total Investors
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {investors}
+                          {store.investors}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -75,7 +87,7 @@ const Header = () => {
                           Total Projects
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {projects}
+                          {store.projects}
                         </span>
                       </div>
                       <Col className="col-auto">

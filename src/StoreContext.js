@@ -21,6 +21,8 @@ export function StoreProvider({ children }) {
     loggedIn: false,
     token: "",
     user: {},
+    investors: "",
+    projects: "",
   });
 
   const updateStore = (data) => {

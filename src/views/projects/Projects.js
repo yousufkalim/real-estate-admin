@@ -43,6 +43,7 @@ import { toast } from "react-toastify";
 
 const Projects = () => {
   const history = useHistory();
+  const updateStore = UpdateStore();
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [project, setProject] = useState({
@@ -80,6 +81,9 @@ const Projects = () => {
   const getProjects = async () => {
     return await api("get", "/projects").then((data) => {
       setProjects(data.projects);
+      updateStore({
+        projects: data.projects.length,
+      });
     });
   };
 
