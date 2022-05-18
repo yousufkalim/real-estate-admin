@@ -22,7 +22,7 @@ import {
 import moment from "moment";
 const { Option } = Select;
 const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
-  const updateStore = UpdateStore();
+ 
   let [project, setProject] = useState({
     dispaly_picture: "",
     name: "",
