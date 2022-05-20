@@ -55,9 +55,15 @@ const EditNews = ({
       formData.append("end_date", news.end_date);
     }
     if (news.selling_price) {
+      if (parseInt(news.selling_price) < 1) {
+        return toast.error("Selling price should be greater than 1");
+      }
       formData.append("selling_price", news.selling_price);
     }
     if (news.total_cost) {
+      if (parseInt(news.total_cost) < 1) {
+        return toast.error("Total Cost should be greater than 1");
+      }
       formData.append("total_cost", news.total_cost);
     }
     if (news.pictures.length > 0) {
