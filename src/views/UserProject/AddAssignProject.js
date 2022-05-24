@@ -26,32 +26,22 @@ const AddAssignProject = ({
 }) => {
   const [project, setProject] = useState({
     project: "",
-    shares: "",
-    remaining_shares: "",
+    shares: 0,
+    remaining_shares: 0,
+    deposit_amount: 0,
+    investor: investor,
   });
-  const handleInput = (e) => {
-    setProject({ ...project, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (project.project == "") {
-      return toast.error("Project is required");
+  const handleDepositeAmount = (e) => {
+    if (e.target.value < 0) {
+      return toast.error("Deposit amount should be greater than 0");
     }
-    if (project.shares == "") {
-      return toast.error("Shares Required");
-    }
-    if (parseInt(project.shares) < 1) {
-      return toast.error("Shares should be greater than 0");
-    }
-    if (parseInt(project.remaining_shares) < parseInt(project.shares)) {
-      return toast.error("Shares should be lesser than remaining shares");
-    }
-    return api("put", `/investors/shares/${investor}`, project).then(() => {
-      toast.success("Share has been added successfully");
-      getUserProjects();
-      getProjects();
-      handleModal();
+    let shares = e.target.value / +project?.unit_share;
+    shares = Math.round(shares * 100 + Number.EPSILON) / 100;
+    setProject({
+      ...project,
+      [e.target.name]: e.target.value,
+      shares: shares,
     });
   };
 
@@ -60,7 +50,32 @@ const AddAssignProject = ({
       ...project,
       project: e.value,
       remaining_shares: e.r_s,
+      unit_share: e.unit_share,
+      deposit_amount: 0,
+      shares: 0,
     }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (project.project == "") {
+      return toast.error("Project is required");
+    }
+    if (project.deposit_amount == "") {
+      return toast.error("Deposit Amount is required");
+    }
+    if (project.shares == "") {
+      return toast.error("Shares Required");
+    }
+    if (parseInt(project.remaining_shares) < parseInt(project.shares)) {
+      return toast.error("Shares should be lesser than remaining shares");
+    }
+    return api("post", `/shares/assignShare`, project).then(() => {
+      toast.success("Share has been added successfully");
+      getUserProjects();
+      getProjects();
+      handleModal();
+    });
   };
 
   return (
@@ -75,7 +90,7 @@ const AddAssignProject = ({
               <Form>
                 <div className="pl-lg-4">
                   <Row>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: "auto" }}>
                       <FormGroup>
                         <label className="form-control-label">Project</label>
                         <Select
@@ -86,11 +101,33 @@ const AddAssignProject = ({
                             value: project?._id,
                             label: project?.name,
                             r_s: project?.remaining_shares,
+                            unit_share: project?.unit_share,
                           }))}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: "auto" }}>
+                      <FormGroup>
+                        <label className="form-control-label">
+                          <span style={{ color: "red" }}>
+                            {project?.deposit_amount ? "" : "*"}{" "}
+                          </span>
+                          Deposit Amount
+                        </label>
+                        <Input
+                          className="form-control-alternative text-default"
+                          required={true}
+                          readOnly={!project.project}
+                          type="number"
+                          value={project?.deposit_amount}
+                          name="deposit_amount"
+                          onChange={handleDepositeAmount}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg="6" style={{ margin: "auto" }}>
                       <FormGroup>
                         <label className="form-control-label">
                           remaining_shares
@@ -102,26 +139,22 @@ const AddAssignProject = ({
                           type="number"
                           value={project?.remaining_shares}
                           name="remaining_shares"
-                          onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: "auto" }}>
                       <FormGroup>
-                        <span style={{ color: "red" }}>
-                          {project.shares ? "" : "*"}{" "}
-                        </span>
                         <label className="form-control-label">
                           Assign Share
                         </label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter user's share here"
+                          placeholder="Caluclated shares"
                           type="number"
+                          readOnly
                           value={project?.shares}
                           name="shares"
-                          onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>

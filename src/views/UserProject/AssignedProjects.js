@@ -58,17 +58,16 @@ const AssignedProjects = () => {
   }, [investorId]);
 
   const getUserProjects = async () => {
-    return await api("get", `/investors/${investorId}`).then((data) => {
-      setUserProjects(data?.investor?.projects);
+    return await api("get", `/shares/${investorId}`).then((data) => {
+      console.log(data, "d");
+      setUserProjects(data?.shares);
     });
   };
 
   const getProjects = async () => {
-    return await api("get", `/projects/findProjects/${investorId}`).then(
-      (data) => {
-        setProjects(data?.projects);
-      }
-    );
+    return await api("get", "/projects").then((data) => {
+      setProjects(data?.projects);
+    });
   };
 
   const handleModal = () => {
@@ -79,10 +78,13 @@ const AssignedProjects = () => {
   const handleEditModal = (item) => {
     if (item) {
       setProject({
-        _id: item?.project?._id,
+        _id: item?._id,
+        project: item?.project?._id,
         name: item?.project?.name,
         remaining_shares: item?.project?.remaining_shares,
+        unit_share: item?.project?.unit_share,
         shares: item?.shares,
+        deposit_amount: item?.deposit_amount,
         old_shares: item?.shares,
       });
     }
@@ -92,8 +94,9 @@ const AssignedProjects = () => {
   };
 
   const handleDelete = (item) => {
-    return api("put", `/investors/deleteShare/${investorId}`, item).then(() => {
-      toast.success("Project deleted successfully");
+    // return console.log(item, "i");
+    return api("put", `/shares/${item._id}`, item).then(() => {
+      toast.success("Project unassigned successfully");
       getUserProjects();
       getProjects();
     });
@@ -101,7 +104,6 @@ const AssignedProjects = () => {
 
   return (
     <>
-      {console.log(userprojects, "userprojects")}
       <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
@@ -126,12 +128,14 @@ const AssignedProjects = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col"> Name</th>
+                    <th scope="col">Investor Name</th>
+                    <th scope="col">Project Name</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
                     <th scope="col">Total Cost</th>
                     <th scope="col">Selling Price</th>
                     <th scope="col">Investor's Shares</th>
+                    <th scope="col">Deposit Amount</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -139,6 +143,7 @@ const AssignedProjects = () => {
                   {userprojects?.map((item) => {
                     return (
                       <tr>
+                        <td>{item?.investor?.first_name}</td>
                         <td>{item?.project?.name}</td>
                         <td>
                           {new Date(item?.project?.start_date).toDateString()}
@@ -149,6 +154,7 @@ const AssignedProjects = () => {
                         <td>{item?.project?.total_cost}</td>
                         <td>{item?.project?.selling_price}</td>
                         <td>{item?.shares}</td>
+                        <td>{item?.deposit_amount}</td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle

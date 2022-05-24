@@ -31,13 +31,28 @@ const EditAssignProject = ({
       [e.target.name]: e.target.value,
     });
   };
+  const handleDepositeAmount = (e) => {
+    if (e.target.value < 0) {
+      return toast.error("Deposit amount should be greater than 0");
+    }
+    let shares = e.target.value / +project?.unit_share;
+    shares = Math.round(shares * 100 + Number.EPSILON) / 100;
+    setProject({
+      ...project,
+      [e.target.name]: e.target.value,
+      shares: shares,
+    });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (project.shares == "") {
       return toast.error("Share's required");
     }
-    if (parseInt(project.shares) < 1) {
+    if (project.deposit_amount == "") {
+      return toast.error("Deposit Amount is required");
+    }
+    if (parseFloat(project.shares) < 0.01) {
       return toast.error("Share's required");
     }
     const total_shares =
@@ -45,7 +60,7 @@ const EditAssignProject = ({
     if (total_shares > parseInt(project.remaining_shares)) {
       return toast.error("Shares should be lesser than remaining shares");
     }
-    api("put", `/investors/editAssignShare/${investor}`, project).then(() => {
+    api("put", `/shares/editAssignShare/${project?._id}`, project).then(() => {
       toast.success("Project edited successfully");
       getProjects();
       getUserProjects();
@@ -91,20 +106,39 @@ const EditAssignProject = ({
                         />
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row>
                     <Col lg="4" style={{ margin: "auto" }}>
                       <FormGroup>
-                        <span style={{ color: "red" }}>
-                          {project.shares ? "" : "*"}{" "}
-                        </span>
-                        <label className="form-control-label">Shares</label>
+                        <label className="form-control-label">
+                          <span style={{ color: "red" }}>
+                            {project?.deposit_amount ? "" : "*"}{" "}
+                          </span>
+                          Deposit Amount
+                        </label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter user's share here"
                           type="number"
+                          value={project?.deposit_amount}
+                          name="deposit_amount"
+                          onChange={handleDepositeAmount}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4" style={{ margin: "auto" }}>
+                      <FormGroup>
+                        <label className="form-control-label">
+                          Assign Share
+                        </label>
+                        <Input
+                          className="form-control-alternative text-default"
+                          required={true}
+                          placeholder="Caluclated shares"
+                          type="number"
+                          readOnly
                           value={project?.shares}
                           name="shares"
-                          onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>
