@@ -43,12 +43,14 @@ import Header from "components/Headers/Header.js";
 import { toast } from "react-toastify";
 
 const ViewInvestors = () => {
-  const [project, setProject] = useState({});
+  const [project, setProject] = useState([]);
   const { projectId } = useParams();
   useEffect(async () => {
-    return await api("get", `/projects/${projectId}`).then((data) => {
-      setProject(data.project);
-    });
+    return await api("get", `/shares/getByProject/${projectId}`).then(
+      (data) => {
+        setProject(data.reports);
+      }
+    );
   }, [projectId]);
   return (
     <>
@@ -70,21 +72,23 @@ const ViewInvestors = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    {/* <th scope="col">Project Name</th> */}
                     <th scope="col">Investor Name</th>
                     <th scope="col">Investor's Shares</th>
+                    <th scope="col">Deposit Amount</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
-                  {project?.investors?.map((item) => {
+                  {project?.map((item) => {
                     return (
                       <tr>
+                        <td>{item?.project?.name}</td>
                         <td>
-                          {item?.investor?.first_name}
-                          {item?.investor?.last_name}
+                          {item?._id?.first_name}
+                          {item?._id?.last_name}
                         </td>
                         <td>{item?.shares}</td>
+                        <td>{item?.deposit_amount}</td>
                       </tr>
                     );
                   })}
