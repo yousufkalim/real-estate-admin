@@ -54,7 +54,6 @@ const ViewInvestors = () => {
   }, [projectId]);
   return (
     <>
-      {console.log(project, "p")}
       <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
@@ -82,7 +81,6 @@ const ViewInvestors = () => {
                   {project?.map((item) => {
                     return (
                       <tr>
-                        <td>{item?.project?.name}</td>
                         <td>
                           {item?._id?.first_name}
                           {item?._id?.last_name}
