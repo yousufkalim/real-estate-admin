@@ -17,9 +17,9 @@
 */
 
 // reactstrap components
-import { useState } from "react";
-import api from "api";
-import { toast } from "react-toastify";
+import { useState } from 'react';
+import api from 'api';
+import { toast } from 'react-toastify';
 import {
   Button,
   Card,
@@ -33,7 +33,7 @@ import {
   InputGroup,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 const Register = () => {
   let [user, setUser] = useState({});
@@ -42,18 +42,29 @@ const Register = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = () => {
     if (!user.name || !user.email || !user.password || !user.confirmPassword) {
-      toast.error("Please fill all the fields");
-    } else if (user.password.length < 8 || user.confirmPassword.length < 8) {
-      toast.error("Password's min length should be greater than 8");
+      toast.error('Please fill all the fields');
+    }
+    let regEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regEmail.test(user.email)) {
+      return toast.error('Please enter valid email address');
+    } else if (user.password.length < 8) {
+      toast.error('Password needs to be atleast 8 characters long ');
     } else if (user.password !== user.confirmPassword) {
-      toast.error("Password and Confirm Password are not same");
+      toast.error('Password and Confirm Password are not same');
     } else {
-      api("post", "/admins", user).then((res) => {
-        setUser({ name: "", email: "", password: "", confirmPassword: "" });
-        toast.success("Account created successfully");
-        window.location = "/auth/login";
+      api('post', '/admins', user).then((res) => {
+        setUser({ name: '', email: '', password: '', confirmPassword: '' });
+        toast.success('Account created successfully');
+        window.location = '/auth/login';
       });
     }
   };
@@ -74,13 +85,7 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
-                    placeholder="Name"
-                    type="text"
-                    name="name"
-                    value={user.name}
-                    onChange={handleInput}
-                  />
+                  <Input placeholder="Name" type="text" name="name" value={user.name} onChange={handleInput} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -131,6 +136,7 @@ const Register = () => {
                     name="confirmPassword"
                     value={user.confirmPassword}
                     onChange={handleInput}
+                    onKeyDown={handleKeyDown}
                   />
                 </InputGroup>
               </FormGroup>
@@ -159,12 +165,7 @@ const Register = () => {
               </Row> */}
 
               <div className="text-center">
-                <Button
-                  className="mt-4"
-                  color="primary"
-                  type="button"
-                  onClick={handleSubmit}
-                >
+                <Button className="mt-4" color="primary" type="button" onClick={handleSubmit}>
                   Create account
                 </Button>
               </div>

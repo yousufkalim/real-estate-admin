@@ -1,81 +1,81 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
-import api from "../../api";
-import { Select } from "antd";
-import View from "../../components/views";
-import FilePicker from "../../components/FilePicker";
-import { UpdateStore } from "StoreContext";
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col,
-  Label,
-} from "reactstrap";
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../api';
+import { Select } from 'antd';
+import View from '../../components/views';
+import FilePicker from '../../components/FilePicker';
+import { UpdateStore } from 'StoreContext';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col, Label } from 'reactstrap';
 // core components
-import moment from "moment";
+import moment from 'moment';
 const { Option } = Select;
 const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
- 
   let [project, setProject] = useState({
-    dispaly_picture: "",
-    name: "",
-    total_cost: "",
-    selling_price: "",
-    start_date: "",
-    end_date: "",
-    total_shares: "",
-    city: "",
+    dispaly_picture: '',
+    name: '',
+    total_cost: '',
+    selling_price: '',
+    start_date: '',
+    end_date: '',
+    total_shares: '',
+    city: '',
   });
 
   const handleInput = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
+  const numberHandler = (e) => {
+    const validatedValue = e.target.value.replace(/[^0-9]/g, '');
+    setProject({ ...project, [e.target.name]: validatedValue });
+  };
 
   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.includes('image')) {
+      toast.error('Only image can be selected');
+      return;
+    }
     setProject({ ...project, [e.target.name]: e.target.files[0] });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (project.name == "") {
+    if (project.name == '') {
       return toast.error("Please enter project's name");
     }
-    if (project.start_date == "") {
-      return toast.error("Please enter start date");
+    if (project.start_date == '') {
+      return toast.error('Please enter start date');
     }
-    if (project.end_date == "") {
-      return toast.error("Please enter start date");
+    if (project.end_date == '') {
+      return toast.error('Please enter start date');
     }
-    if (project.total_cost == "") {
-      return toast.error("Please enter total cost");
+    if (project.end_date < project.start_date) {
+      return toast.error('End date can never be earlier than start date');
     }
-    if (project.selling_price == "") {
-      return toast.error("Please enter selling_price ");
+    if (project.total_cost == '') {
+      return toast.error('Please enter total cost');
+    }
+
+    if (project.selling_price == '') {
+      return toast.error('Please enter selling price ');
     }
     let formData = new FormData();
-    formData.append("name", project.name);
-    formData.append("start_date", project.start_date);
-    formData.append("end_date", project.end_date);
-    formData.append("total_cost", project.total_cost);
-    formData.append("selling_price", project.selling_price);
+    formData.append('name', project.name);
+    formData.append('start_date', project.start_date);
+    formData.append('end_date', project.end_date);
+    formData.append('total_cost', project.total_cost);
+    formData.append('selling_price', project.selling_price);
     if (project.dispaly_picture) {
-      formData.append("file", project.dispaly_picture);
+      formData.append('file', project.dispaly_picture);
     }
     if (project.city) {
-      formData.append("city", project.city);
+      formData.append('city', project.city);
     }
     if (project.total_shares) {
-      formData.append("total_shares", project.total_shares);
+      formData.append('total_shares', project.total_shares);
     }
-    api("post", "/projects", formData).then((res) => {
-      toast.success("Project added successfully");
+    api('post', '/projects', formData).then((res) => {
+      toast.success('Project added successfully');
       getProjects();
       handleModal();
     });
@@ -93,16 +93,16 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                 <div className="pl-lg-4">
                   <Row>
                     <Col lg="12">
-                      <FormGroup style={{ width: "60%" }}>
+                      <FormGroup style={{ width: '60%' }}>
                         <label className="form-control-label">
-                          Add Main Picture{" "}
-                          {/* <View url={project?.dispaly_picture} /> */}
+                          Add Main Picture {/* <View url={project?.dispaly_picture} /> */}
                         </label>
                         <FilePicker
                           lableClassName="form-control-label"
                           htmlFor="input-image"
                           InputClassName="form-control-file form"
                           InputId="input-image"
+                          accept="image/png, image/jpeg"
                           InputName="dispaly_picture"
                           value={project?.dispaly_picture}
                           onChange={handleFileChange}
@@ -111,15 +111,13 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="3" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          {" "}
-                          <span style={{ color: "red" }}>
-                            {project.name ? "" : "*"}{" "}
-                          </span>
+                          {' '}
+                          <span style={{ color: 'red' }}>{project.name ? '' : '*'} </span>
                           Name
-                        </label>{" "}
+                        </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
@@ -131,31 +129,31 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="3" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          Total Share
-                        </label>{" "}
+                          {' '}
+                          <span style={{ color: 'red' }}>{project.total_shares ? '' : '*'} </span>
+                          Total Shares
+                        </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
                           placeholder="Enter project's total shares here"
-                          type="number"
+                          type="tel"
                           value={project.total_shares}
                           name="total_shares"
-                          onChange={handleInput}
+                          onChange={numberHandler}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="3" style={{ margin: "auto" }}>
+                    <Col lg="3" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          {" "}
-                          <span style={{ color: "red" }}>
-                            {project.city ? "" : "*"}{" "}
-                          </span>
+                          {' '}
+                          <span style={{ color: 'red' }}>{project.city ? '' : '*'} </span>
                           City
-                        </label>{" "}
+                        </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
@@ -169,44 +167,34 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-date"
-                        >
-                          <span style={{ color: "red" }}>
-                            {project.start_date ? "" : "*"}{" "}
-                          </span>
+                        <label className="form-control-label" htmlFor="input-date">
+                          <span style={{ color: 'red' }}>{project.start_date ? '' : '*'} </span>
                           Start Date
                         </label>
                         <Input
                           className="form-control-alternative"
                           id="input-date"
-                          placeholder={"Select Dates"}
+                          placeholder={'Select Dates'}
                           type="date"
-                          value={moment(project?.start_date).format(
-                            "YYYY-MM-DD"
-                          )}
+                          value={moment(project?.start_date).format('YYYY-MM-DD')}
                           name="start_date"
                           onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: "red" }}>
-                            {project.end_date ? "" : "*"}{" "}
-                          </span>{" "}
-                          End Date
+                          <span style={{ color: 'red' }}>{project.end_date ? '' : '*'} </span> End Date
                         </label>
                         <Input
                           className="form-control-alternative"
                           id="input-date"
-                          placeholder={"Select Dates"}
+                          placeholder={'Select Dates'}
                           type="date"
-                          value={moment(project?.end_date).format("YYYY-MM-DD")}
+                          value={moment(project?.end_date).format('YYYY-MM-DD')}
                           name="end_date"
                           min={disableDates()}
                           onChange={handleInput}
@@ -215,33 +203,39 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Total Cost</label>
+                        <label className="form-control-label">
+                          {' '}
+                          <span style={{ color: 'red' }}>{project.total_cost ? '' : '*'} </span>
+                          Total Cost
+                        </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's total_cost here"
-                          type="number"
+                          placeholder="Enter project's total cost here"
+                          type="tel"
                           value={project.total_cost}
                           name="total_cost"
-                          onChange={handleInput}
+                          onChange={numberHandler}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
+                          {' '}
+                          <span style={{ color: 'red' }}>{project.selling_price ? '' : '*'} </span>
                           Selling Price
-                        </label>
+                        </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's selling_price here"
-                          type="number"
+                          placeholder="Enter project's selling price here"
+                          type="tel"
                           value={project.selling_price}
                           name="selling_price"
-                          onChange={handleInput}
+                          onChange={numberHandler}
                         />
                       </FormGroup>
                     </Col>

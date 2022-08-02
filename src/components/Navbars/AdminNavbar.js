@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
-import { Store } from "StoreContext";
+import { Link } from 'react-router-dom';
+import { Store } from 'StoreContext';
 // reactstrap components
 import {
   DropdownMenu,
@@ -33,33 +33,28 @@ import {
   Nav,
   Container,
   Media,
-} from "reactstrap";
+} from 'reactstrap';
+import { toast } from 'react-toastify';
 
 const AdminNavbar = (props) => {
   const { user } = Store();
   const handleLogout = () => {
-    localStorage.setItem("token", "");
-    window.location = "/auth/login";
+    localStorage.setItem('token', '');
+    toast.success('logging out');
+    window.location = '/auth/login';
   };
 
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
         <Container fluid>
-          <Link
-            className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-            to="/admin/index"
-          >
-            {props.brandText}
-          </Link>
+          <div className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">{props.brandText}</div>
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <Media className="ml-2 d-none d-lg-block">
-                    <span className="mb-0 text-sm font-weight-bold">
-                      {user?.name}
-                    </span>
+                    <span className="mb-0 text-sm font-weight-bold">{user?.name}</span>
                   </Media>
                 </Media>
               </DropdownToggle>

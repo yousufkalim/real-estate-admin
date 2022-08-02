@@ -1,43 +1,25 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import api from "../../api";
-import Select from "react-select";
-import moment from "moment";
-import View from "../../components/views";
-import FilePicker from "../../components/FilePicker";
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col,
-  Label,
-} from "reactstrap";
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../api';
+import Select from 'react-select';
+import moment from 'moment';
+import View from '../../components/views';
+import FilePicker from '../../components/FilePicker';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col, Label } from 'reactstrap';
 // core components
 
 const { Option } = Select;
 
-const AddNews = ({
-  openModal,
-  handleModal,
-  getNews,
-  Projects,
-  disableDates,
-}) => {
+const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) => {
   useEffect(() => {
     getProjects();
   }, []);
   let [news, setNews] = useState({
-    project: "",
-    end_date: "",
-    news_date: "",
-    selling_price: "",
-    total_cost: "",
+    project: '',
+    end_date: '',
+    news_date: '',
+    selling_price: '',
+    total_cost: '',
   });
 
   let [projects, setProjects] = useState([]);
@@ -57,6 +39,11 @@ const AddNews = ({
   };
 
   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.includes('image')) {
+      toast.error('Only image can be selected');
+      return;
+    }
     setPictures({
       ...pictures,
       files: [...pictures.files, ...e.target.files],
@@ -64,54 +51,60 @@ const AddNews = ({
   };
 
   const getProjects = async () => {
-    return await api("get", "/projects").then((data) => {
+    return await api('get', '/projects').then((data) => {
       setProjects(data?.projects);
     });
   };
+
+  const numberHandler = (e) => {
+    const validatedValue = e.target.value.replace(/[^0-9]/g, '');
+    setNews({ ...news, [e.target.name]: validatedValue });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let formData = new FormData();
-    if (news.project == "") {
-      return toast.error("Please  select project ");
+    if (news.project == '') {
+      return toast.error('Please  select project ');
     }
-    if (news.news_date == "") {
-      return toast.error("News Date is required");
+    if (news.news_date == '') {
+      return toast.error('News Date is required');
     }
-    formData.append("project", news.project);
-    formData.append("news_date", news.news_date);
+    if (news.end_date && news.news_date) {
+      if (news.end_date < news.news_date) {
+        return toast.error('End date can never be earlier than start date');
+      }
+    }
+    formData.append('project', news.project);
+    formData.append('news_date', news.news_date);
 
-    if (
-      news.end_date == "" &&
-      news.selling_price == "" &&
-      news.total_cost == "" &&
-      pictures.files.length < 1
-    ) {
-      return toast.error("Please  add one more field atleast ");
+    if (news.end_date == '' && news.selling_price == '' && news.total_cost == '' && pictures.files.length < 1) {
+      return toast.error('Please  add one more field atleast ');
     }
 
     if (pictures.files.length > 0) {
       pictures.files.map((e) => {
-        formData.append("files", e);
+        formData.append('files', e);
       });
     }
     if (news.end_date) {
-      formData.append("end_date", news.end_date);
+      formData.append('end_date', news.end_date);
     }
 
     if (news.selling_price) {
       if (parseInt(news.selling_price) < 1) {
-        return toast.error("Selling price should be greater than 1");
+        return toast.error('Selling price should be greater than 1');
       }
-      formData.append("selling_price", news.selling_price);
+      formData.append('selling_price', news.selling_price);
     }
     if (news.total_cost) {
       if (parseInt(news.total_cost) < 1) {
-        return toast.error("Total Cost should be greater than 1");
+        return toast.error('Total Cost should be greater than 1');
       }
-      formData.append("total_cost", news.total_cost);
+      formData.append('total_cost', news.total_cost);
     }
-    api("post", "/news", formData).then((res) => {
-      toast.success("News added successfully");
+    api('post', '/news', formData).then((res) => {
+      toast.success('News added successfully');
       getNews();
       handleModal();
     });
@@ -130,7 +123,7 @@ const AddNews = ({
                 <div className="pl-lg-4">
                   <Row>
                     <Col lg="12">
-                      <FormGroup style={{ width: "60%" }}>
+                      <FormGroup style={{ width: '60%' }}>
                         <label className="form-control-label">
                           Add Main Picture <View url={news?.pictures} />
                         </label>
@@ -152,11 +145,13 @@ const AddNews = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
+                          {' '}
+                          <span style={{ color: 'red' }}>{news.project ? '' : '*'} </span>
                           Select Project
-                        </label>
+                        </label>{' '}
                         <Select
                           onChange={handleProjectChange}
                           name="project"
@@ -168,40 +163,36 @@ const AddNews = ({
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-date"
-                        >
-                          News Date
-                        </label>
+                        <label className="form-control-label">
+                          {' '}
+                          <span style={{ color: 'red' }}>{news.news_date ? '' : '*'} </span>
+                          news Date
+                        </label>{' '}
                         <Input
                           className="form-control-alternative"
                           id="input-date"
-                          placeholder={"Select Dates"}
+                          placeholder={'Select Dates'}
                           type="date"
-                          value={moment(news?.news_date).format("YYYY-MM-DD")}
+                          value={moment(news?.news_date).format('YYYY-MM-DD')}
                           name="news_date"
                           min={disableDates()}
                           onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label
-                          className="form-control-label"
-                          htmlFor="input-date"
-                        >
+                        <label className="form-control-label" htmlFor="input-date">
                           Project End Date
                         </label>
                         <Input
                           className="form-control-alternative"
                           id="input-date"
-                          placeholder={"Select Dates"}
+                          placeholder={'Select Dates'}
                           type="date"
-                          value={moment(news?.end_date).format("YYYY-MM-DD")}
+                          value={moment(news?.end_date).format('YYYY-MM-DD')}
                           name="end_date"
                           min={disableDates()}
                           onChange={handleInput}
@@ -210,33 +201,31 @@ const AddNews = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">Total Cost</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter news's total_cost here"
-                          type="number"
+                          placeholder="Enter news's total cost here"
+                          type="tel"
                           value={news.total_cost}
                           name="total_cost"
-                          onChange={handleInput}
+                          onChange={numberHandler}
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">
-                          Selling Price
-                        </label>
+                        <label className="form-control-label">Selling Price</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter news's selling_price here"
-                          type="number"
+                          placeholder="Enter news's selling price here"
+                          type="tel"
                           value={news.selling_price}
                           name="selling_price"
-                          onChange={handleInput}
+                          onChange={numberHandler}
                         />
                       </FormGroup>
                     </Col>
