@@ -18,7 +18,7 @@
 /*eslint-disable*/
 
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Container, Row, Col, Nav, NavItem, NavLink } from 'reactstrap';
 
 const Footer = () => {
   return (
@@ -26,24 +26,14 @@ const Footer = () => {
       <Row className="align-items-center justify-content-xl-between">
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-muted">
-            © {new Date().getFullYear()}{" "}
-            <a
-              className="font-weight-bold ml-1"
-              href="https://www.passtotrip.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            © {new Date().getFullYear()}{' '}
+            <a style={{ pointerEvents: 'none' }} className="font-weight-bold ml-1">
               Admin Panel
             </a>
-            &nbsp;Developed by{" "}
-            <a
-              className="font-weight-bold ml-1"
-              href="https://www.falconconsulting.fr"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            &nbsp;Developed by{' '}
+            <a className="font-weight-bold ml-1" href="https://www.falconconsulting.fr" rel="noopener noreferrer" target="_blank">
               Falcon Consulting
-            </a>{" "}
+            </a>{' '}
             - All rights reserved.
           </div>
         </Col>

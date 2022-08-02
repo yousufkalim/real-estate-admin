@@ -1,45 +1,44 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import api from "../../api";
-import { Select } from "antd";
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col,
-} from "reactstrap";
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../api';
+import { Select } from 'antd';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/bootstrap.css';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col } from 'reactstrap';
 // core components
 
 const { Option } = Select;
 
 const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
+  const [phone, setPhone] = useState(user.phone);
   const handleInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const phoneChange = (e) => {
+    setPhone(e);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (user.first_name == "") {
+    if (user.first_name == '') {
       return toast.error("Please enter user's first name");
     }
 
-    if (user.last_name == "") {
+    if (user.last_name == '') {
       return toast.error("Please enter user's last name");
     }
 
-    if (user.phone == "") {
-      return toast.error("Contact no. is required");
+    if (user.phone == '') {
+      return toast.error('Contact no. is required');
     }
+    if (phone.length < 9) {
+      return toast.error('phone number atleast 8 characters long');
+    }
+    user.phone = '+' + phone;
 
-    api("put", `/investors/${user._id}`, user).then((res) => {
-      toast.success("Investor edited successfully");
+    api('put', `/investors/${user._id}`, user).then((res) => {
+      toast.success('Investor edited successfully');
       getUsers();
       handleModal();
     });
@@ -57,11 +56,9 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
               <Form>
                 <div className="pl-lg-4">
                   <Row>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <span style={{ color: "red" }}>
-                          {user.name ? "" : "*"}{" "}
-                        </span>
+                        <span style={{ color: 'red' }}>{user.first_name ? '' : '*'} </span>
                         <label className="form-control-label">First Name</label>
                         <Input
                           className="form-control-alternative text-default"
@@ -74,11 +71,9 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <span style={{ color: "red" }}>
-                          {user.last_name ? "" : "*"}{" "}
-                        </span>
+                        <span style={{ color: 'red' }}>{user.last_name ? '' : '*'} </span>
                         <label className="form-control-label">Last Name</label>
                         <Input
                           className="form-control-alternative text-default"
@@ -93,24 +88,12 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="6" style={{ margin: "auto" }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <span style={{ color: "red" }}>
-                          {user.phone ? "" : "*"}{" "}
-                        </span>
                         <label className="form-control-label">
-                          Contact no.
+                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> Phone Number
                         </label>
-                        <Input
-                          className="form-control-alternative text-default"
-                          required={true}
-                          placeholder="Enter investor's contact here"
-                          type="phone"
-                          value={user.phone}
-                          name="phone"
-                          onChange={handleInput}
-                          maxLength="13"
-                        />
+                        <PhoneInput country={'eg'} enableSearch={true} value={phone} onChange={phoneChange} />
                       </FormGroup>
                     </Col>
                   </Row>

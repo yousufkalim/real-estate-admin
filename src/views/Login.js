@@ -17,8 +17,8 @@
 */
 
 // reactstrap components
-import { useState } from "react";
-import api from "api";
+import { useEffect, useState } from 'react';
+import api from 'api';
 import {
   Button,
   Card,
@@ -32,19 +32,48 @@ import {
   InputGroup,
   Row,
   Col,
-} from "reactstrap";
-
+} from 'reactstrap';
+import { toast } from 'react-toastify';
+import { Store, UpdateStore } from 'StoreContext';
 const Login = () => {
+  const store = Store();
   let [user, setUser] = useState({});
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+    setUser({ ...user, email: email, password: password });
+  }, []);
 
   const handleInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  };
 
   const handleSubmit = () => {
-    api("post", "/admins/login", user).then((res) => {
-      localStorage.setItem("token", res.token);
-      window.location = "/admin/index";
+    if (user.email == '') {
+      return toast.error('Email is required');
+    }
+    let regEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regEmail.test(user.email)) {
+      return toast.error('Please enter valid email address');
+    }
+    if (user.password == '') {
+      return toast.error('Passowrd  is required');
+    }
+    api('post', '/admins/login', user).then((res) => {
+      localStorage.setItem('token', res.token);
+      if (checked) {
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('password', user.password);
+      }
+      window.location = '/admin/index';
     });
   };
 
@@ -68,8 +97,9 @@ const Login = () => {
                     placeholder="Email"
                     type="email"
                     name="email"
-                    autoComplete="new-email"
+                    value={user?.email}
                     onChange={handleInput}
+                    onKeyDown={handleKeyDown}
                   />
                 </InputGroup>
               </FormGroup>
@@ -84,8 +114,9 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     name="password"
-                    autoComplete="new-password"
+                    value={user?.password}
                     onChange={handleInput}
+                    onKeyDown={handleKeyDown}
                   />
                 </InputGroup>
               </FormGroup>
@@ -94,21 +125,15 @@ const Login = () => {
                   className="custom-control-input"
                   id=" customCheckLogin"
                   type="checkbox"
+                  defaultChecked={checked}
+                  onChange={() => setChecked(!checked)}
                 />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
+                <label className="custom-control-label" htmlFor=" customCheckLogin">
                   <span className="text-muted">Remember me</span>
                 </label>
               </div>
               <div className="text-center">
-                <Button
-                  className="my-4"
-                  color="primary"
-                  type="button"
-                  onClick={handleSubmit}
-                >
+                <Button className="my-4" color="primary" type="button" onClick={handleSubmit}>
                   Sign in
                 </Button>
               </div>

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../api';
+import axios from 'axios';
 import { Select } from 'antd';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/bootstrap.css';
@@ -16,7 +17,17 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
     phone: '',
     country_code: '',
   });
-  const [phone, setPhone] = useState('');
+  // useEffect(() => {
+  //   fetch('https://extreme-ip-lookup.com/json/')
+  //     .then((res) => res.json())
+  //     .then((response) => {
+  //       console.log('Country is : ', response);
+  //     })
+  //     .catch((data, status) => {
+  //       console.log('Request failed:', data);
+  //     });
+  // }, []);
+  const [phone, setPhone] = useState('+92');
   const handleInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -24,18 +35,18 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user.first_name == '') {
-      return toast.error("Please enter user's name");
+      return toast.error("Please enter user's first name");
     }
     if (user.last_name == '') {
-      return toast.error("Please enter user's name");
+      return toast.error("Please enter user's last name");
     }
     if (phone == '') {
-      return toast.error('country code is required');
+      return toast.error('phone number is required');
     }
-    if (user.phone == '') {
-      return toast.error('Contact no. is required');
+    if (phone.length < 9) {
+      return toast.error('phone number atleast 8 characters long');
     }
-    user.country_code = phone;
+    user.phone = phone;
     api('post', '/investors', user).then((res) => {
       toast.success('User added successfully');
       getUsers();
@@ -77,6 +88,8 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                           placeholder="Enter investor's first name here"
                           type="text"
                           value={user.first_name}
+                          maxLength="15"
+                          minLength="3"
                           name="first_name"
                           onChange={handleInput}
                         />
@@ -96,22 +109,24 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                           type="text"
                           value={user.last_name}
                           name="last_name"
+                          maxLength="15"
+                          minLength="3"
                           onChange={handleInput}
                         />
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="4" style={{ margin: 'auto' }}>
+                    <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> country code
+                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> Phone Number
                         </label>
                         <PhoneInput country={'eg'} enableSearch={true} value={phone} onChange={phoneChange} />
                       </FormGroup>
                     </Col>
 
-                    <Col lg="4" style={{ margin: 'auto' }}>
+                    {/* <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
                           <span style={{ color: 'red' }}>{user.phone ? '' : '*'} </span> Contact no.
@@ -127,7 +142,7 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                           maxLength="13"
                         />
                       </FormGroup>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </Form>

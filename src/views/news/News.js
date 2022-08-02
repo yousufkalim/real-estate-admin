@@ -16,11 +16,11 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
-import moment from "moment";
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
+import moment from 'moment';
 import {
   Badge,
   Card,
@@ -34,25 +34,25 @@ import {
   Table,
   Container,
   Row,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import AddNews from "./AddNews";
-import EditNews from "./EditNews";
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
+import AddNews from './AddNews';
+import EditNews from './EditNews';
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
 
 const Users = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [allnews, setAllNews] = useState([]);
   const [news, setNews] = useState({
-    project: "",
-    pictures: "",
-    delay_date: "",
-    news_date: "",
-    total_cost: "",
-    selling_cost: "",
+    project: '',
+    pictures: '',
+    delay_date: '',
+    news_date: '',
+    total_cost: '',
+    selling_cost: '',
   });
 
   useEffect(() => {
@@ -66,15 +66,15 @@ const Users = () => {
     mm = today.getMonth() + 1;
     yyyy = today.getFullYear();
     if (mm < 10) {
-      mm = "0" + mm;
+      mm = '0' + mm;
     }
     if (dd < 10) {
-      dd = "0";
+      dd = '0';
     }
-    return yyyy + "-" + mm + "-" + dd;
+    return yyyy + '-' + mm + '-' + dd;
   };
   const getAllNews = async () => {
-    await api("get", "/news").then((data) => {
+    await api('get', '/news').then((data) => {
       setAllNews(data?.news);
     });
   };
@@ -88,10 +88,10 @@ const Users = () => {
       // return console.log(item, "n");
       setNews({
         _id: item?._id,
-        total_cost: item.total_cost ? item.total_cost : "",
-        selling_price: item?.selling_price ? item.selling_price : "",
-        end_date: item?.end_date ? item.end_date : "",
-        news_date: item?.news_date ? item.news_date : "",
+        total_cost: item.total_cost ? item.total_cost : '',
+        selling_price: item?.selling_price ? item.selling_price : '',
+        end_date: item?.end_date ? item.end_date : '',
+        news_date: item?.news_date ? item.news_date : '',
         project: item?.project?.name,
         project_id: item?.project?._id,
         pictures: item?.pictures?.map((pic) => {
@@ -104,8 +104,8 @@ const Users = () => {
   };
 
   const handleDelete = (item) => {
-    api("delete", `/news/${item}`).then(() => {
-      toast.success("News deleted successfully");
+    api('delete', `/news/${item}`).then(() => {
+      toast.success('News deleted successfully');
       getAllNews();
     });
   };
@@ -122,12 +122,7 @@ const Users = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h3 className="mb-0">News</h3>
-                  <Button
-                    color="primary"
-                    href="#pablo"
-                    onClick={handleModal}
-                    size="md"
-                  >
+                  <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
                     Add News
                   </Button>
@@ -149,21 +144,10 @@ const Users = () => {
                     return (
                       <tr>
                         <td>{item?.project?.name}</td>
-                        <td>{item?.total_cost ? item.total_cost : "_"}</td>
-                        <td>
-                          {item?.selling_price ? item.selling_price : "_"}
-                        </td>
-                        <td>
-                          {item?.news_date
-                            ? moment(item.news_date).format("yyyy-mm-dd")
-                            : "_"}
-                        </td>
-                        <td>
-                          {item?.end_date
-                            ? moment(item.end_date).format("yyyy-mm-dd")
-                            : "_"}
-                        </td>
-
+                        <td>{item?.total_cost ? item.total_cost : '_'}</td>
+                        <td>{item?.selling_price ? item.selling_price : '_'}</td>
+                        <td>{item?.news_date ? new Date(item.news_date).toDateString() : '_'}</td>
+                        <td>{item?.end_date ? new Date(item.end_date).toDateString() : '_'}</td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
@@ -177,17 +161,10 @@ const Users = () => {
                               <i className="fas fa-ellipsis-v" />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => handleEditModal(item)}
-                              >
+                              <DropdownItem href="#pablo" onClick={() => handleEditModal(item)}>
                                 Edit
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                className="text-danger"
-                                onClick={() => handleDelete(item._id)}
-                              >
+                              <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(item._id)}>
                                 Delete
                               </DropdownItem>
                             </DropdownMenu>
@@ -202,12 +179,7 @@ const Users = () => {
           </div>
         </Row>
         {openModal && (
-          <AddNews
-            openModal={openModal}
-            handleModal={handleModal}
-            getNews={getAllNews}
-            disableDates={disableDates}
-          />
+          <AddNews openModal={openModal} handleModal={handleModal} getNews={getAllNews} disableDates={disableDates} />
         )}
         {editModal && (
           <EditNews

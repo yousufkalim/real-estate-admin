@@ -15,26 +15,19 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 // reactstrap components
-import {
-  UncontrolledCollapse,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  Container,
-  Row,
-  Col,
-} from "reactstrap";
+import { UncontrolledCollapse, NavbarBrand, Navbar, NavItem, NavLink, Nav, Container, Row, Col } from 'reactstrap';
 
 const AdminNavbar = () => {
+  const handleClick = () => {
+    window.location = '/auth/login';
+  };
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
         <Container className="px-4">
-          <NavbarBrand to="/auth/login" tag={Link}>
+          <NavbarBrand onClick={handleClick} tag={Link}>
             {/* <img
               alt="..."
               src={require("../../assets/img/brand/passtotrip.png").default}
@@ -49,13 +42,7 @@ const AdminNavbar = () => {
               <Row>
                 <Col className="collapse-brand" xs="6">
                   <Link to="/">
-                    <img
-                      alt="..."
-                      src={
-                        require("../../assets/img/brand/argon-react.png")
-                          .default
-                      }
-                    />
+                    <img alt="..." src={require('../../assets/img/brand/argon-react.png').default} />
                   </Link>
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -68,11 +55,7 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  to="/auth/register"
-                  tag={Link}
-                >
+                <NavLink className="nav-link-icon" to="/auth/register" tag={Link}>
                   <i className="ni ni-circle-08" />
                   <span className="nav-link-inner--text">Register</span>
                 </NavLink>
