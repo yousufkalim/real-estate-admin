@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
 import {
   Badge,
   Card,
@@ -33,30 +33,32 @@ import {
   Table,
   Container,
   Row,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import AddUser from "./AddUser";
-import EditUser from "./EditUser";
-import AssignedProjects from "../UserProject/AssignedProjects";
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
-
+import AddUser from './AddUser';
+import EditUser from './EditUser';
+import AssignedProjects from '../UserProject/AssignedProjects';
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const Users = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const { users } = Store();
   const updateStore = UpdateStore();
   const history = useHistory();
   const [user, setUser] = useState({
-    _id: "",
-    name: "",
-    email: "",
-    password: "",
-    address: "",
-    number: "",
-    country: "",
-    city: "",
+    _id: '',
+    name: '',
+    email: '',
+    password: '',
+    address: '',
+    number: '',
+    country: '',
+    city: '',
   });
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Users = () => {
   }, []);
 
   const getUsers = async () => {
-    const data = await api("get", "/investors");
+    const data = await api('get', '/investors');
     updateStore({ users: data.investors, investors: data.investors.length });
   };
 
@@ -88,8 +90,8 @@ const Users = () => {
   };
 
   const handleDelete = (item) => {
-    api("delete", `/investors/${item}`).then(() => {
-      toast.success("User deleted successfully");
+    api('delete', `/investors/${item}`).then(() => {
+      toast.success('User deleted successfully');
       getUsers();
     });
   };
@@ -108,25 +110,20 @@ const Users = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0">Investors</h3>
-                  <Button
-                    color="primary"
-                    href="#pablo"
-                    onClick={handleModal}
-                    size="md"
-                  >
+                  <h3 className="mb-0">{t('Investors')}</h3>
+                  <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
-                    Add Investor
+                    {t('Add Investor')}
                   </Button>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-flush">
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th cope="col">Phone</th>
-                    <th scope="col">Created At</th>
+                    <th scope="col">{t('First Name')}</th>
+                    <th scope="col">{t('Last Name')}</th>
+                    <th cope="col">{t('Phone')}</th>
+                    <th scope="col">{t('Created At')}</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -151,26 +148,15 @@ const Users = () => {
                               <i className="fas fa-ellipsis-v" />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                onClick={() => navToProjects(item)}
-                                href="#pablo"
-                                className="text-success"
-                              >
-                                Assign Project
+                              <DropdownItem onClick={() => navToProjects(item)} href="#pablo" className="text-success">
+                                {t('Assign Project')}
                               </DropdownItem>
 
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => handleEditModal(item)}
-                              >
-                                Edit
+                              <DropdownItem href="#pablo" onClick={() => handleEditModal(item)}>
+                                {t('Edit')}
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                className="text-danger"
-                                onClick={() => handleDelete(item._id)}
-                              >
-                                Delete
+                              <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(item._id)}>
+                                {t('Delete')}
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>
@@ -183,21 +169,9 @@ const Users = () => {
             </Card>
           </div>
         </Row>
-        {openModal && (
-          <AddUser
-            openModal={openModal}
-            handleModal={handleModal}
-            getUsers={getUsers}
-          />
-        )}
+        {openModal && <AddUser openModal={openModal} handleModal={handleModal} getUsers={getUsers} />}
         {editModal && (
-          <EditUser
-            openModal={editModal}
-            handleModal={handleEditModal}
-            user={user}
-            setUser={setUser}
-            getUsers={getUsers}
-          />
+          <EditUser openModal={editModal} handleModal={handleEditModal} user={user} setUser={setUser} getUsers={getUsers} />
         )}
       </Container>
     </>

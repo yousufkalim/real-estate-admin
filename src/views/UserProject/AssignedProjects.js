@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
+import { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
 import {
   Badge,
   Card,
@@ -33,21 +33,23 @@ import {
   Table,
   Container,
   Row,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import AddAssignProject from "./AddAssignProject";
-import EditAssignProject from "./EditAssignProject";
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
-
+import AddAssignProject from './AddAssignProject';
+import EditAssignProject from './EditAssignProject';
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const AssignedProjects = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const { investorId } = useParams();
   const [project, setProject] = useState({
-    projet: "",
-    shares: "",
+    projet: '',
+    shares: '',
   });
   const [projects, setProjects] = useState([]);
 
@@ -58,14 +60,14 @@ const AssignedProjects = () => {
   }, [investorId]);
 
   const getUserProjects = async () => {
-    return await api("get", `/shares/${investorId}`).then((data) => {
-      console.log(data, "d");
+    return await api('get', `/shares/${investorId}`).then((data) => {
+      console.log(data, 'd');
       setUserProjects(data?.shares);
     });
   };
 
   const getProjects = async () => {
-    return await api("get", "/projects").then((data) => {
+    return await api('get', '/projects').then((data) => {
       setProjects(data?.projects);
     });
   };
@@ -95,8 +97,8 @@ const AssignedProjects = () => {
 
   const handleDelete = (item) => {
     // return console.log(item, "i");
-    return api("put", `/shares/${item._id}`, item).then(() => {
-      toast.success("Project unassigned successfully");
+    return api('put', `/shares/${item._id}`, item).then(() => {
+      toast.success('Project unassigned successfully');
       getUserProjects();
       getProjects();
     });
@@ -113,29 +115,25 @@ const AssignedProjects = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0">Projects</h3>
-                  <Button
-                    color="primary"
-                    href="#pablo"
-                    onClick={handleModal}
-                    size="md"
-                  >
+                  <h3 className="mb-0">{t('Projects')}</h3>
+                  <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
-                    Add Share
+
+                    {t('Add Share')}
                   </Button>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Investor Name</th>
-                    <th scope="col">Project Name</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Total Cost</th>
-                    <th scope="col">Selling Price</th>
-                    <th scope="col">Investor's Shares</th>
-                    <th scope="col">Deposit Amount</th>
+                    <th scope="col">{t('Investor Name')}</th>
+                    <th scope="col">{t('Project Name')}</th>
+                    <th scope="col">{t('Start Date')}</th>
+                    <th scope="col">{t('End Date')}</th>
+                    <th scope="col">{t('Total Cost')}</th>
+                    <th scope="col">{t('Selling Price')}</th>
+                    <th scope="col">{t('Investor Shares')}</th>
+                    <th scope="col">{t('Deposit Amount')}</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -145,12 +143,8 @@ const AssignedProjects = () => {
                       <tr>
                         <td>{item?.investor?.first_name}</td>
                         <td>{item?.project?.name}</td>
-                        <td>
-                          {new Date(item?.project?.start_date).toDateString()}
-                        </td>
-                        <td>
-                          {new Date(item?.project?.end_date).toDateString()}
-                        </td>
+                        <td>{new Date(item?.project?.start_date).toDateString()}</td>
+                        <td>{new Date(item?.project?.end_date).toDateString()}</td>
                         <td>{item?.project?.total_cost}</td>
                         <td>{item?.project?.selling_price}</td>
                         <td>{item?.shares}</td>
@@ -168,18 +162,11 @@ const AssignedProjects = () => {
                               <i className="fas fa-ellipsis-v" />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => handleEditModal(item)}
-                              >
-                                Edit Shares
+                              <DropdownItem href="#pablo" onClick={() => handleEditModal(item)}>
+                                {t('Edit Shares')}
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                className="text-danger"
-                                onClick={() => handleDelete(item)}
-                              >
-                                Delete
+                              <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(item)}>
+                                {t('Delete')}
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>

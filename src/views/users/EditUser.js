@@ -6,10 +6,13 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/bootstrap.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col } from 'reactstrap';
 // core components
+import { useTranslation } from 'react-i18next';
 
 const { Option } = Select;
 
 const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [phone, setPhone] = useState(user.phone);
   const handleInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -48,7 +51,7 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Edit a investor
+          {t('Edit a investor')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -59,11 +62,11 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <span style={{ color: 'red' }}>{user.first_name ? '' : '*'} </span>
-                        <label className="form-control-label">First Name</label>
+                        <label className="form-control-label">{t('First Name')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter user's first_name here"
+                          placeholder={t('Enter investor first name here')}
                           type="text"
                           value={user.first_name}
                           name="first_name"
@@ -74,11 +77,11 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <span style={{ color: 'red' }}>{user.last_name ? '' : '*'} </span>
-                        <label className="form-control-label">Last Name</label>
+                        <label className="form-control-label">{t('Last Name')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter user's last name here"
+                          placeholder={t('Enter investor last name here')}
                           type="text"
                           value={user.last_name}
                           name="last_name"
@@ -91,7 +94,8 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> Phone Number
+                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span>
+                          {t('Phone')}
                         </label>
                         <PhoneInput country={'eg'} enableSearch={true} value={phone} onChange={phoneChange} />
                       </FormGroup>
@@ -104,10 +108,10 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSubmit}>
-            Update
+            {t('Update')}
           </Button>
 
-          <Button onClick={handleModal}>Cancel</Button>
+          <Button onClick={handleModal}>{t('Cancel')}</Button>
         </ModalFooter>
       </Modal>
     </>

@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
+import { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
 import {
   Modal,
   ModalBody,
@@ -36,21 +36,21 @@ import {
   Table,
   Container,
   Row,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
-
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const ViewInvestors = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [project, setProject] = useState([]);
   const { projectId } = useParams();
   useEffect(async () => {
-    return await api("get", `/shares/getByProject/${projectId}`).then(
-      (data) => {
-        setProject(data.reports);
-      }
-    );
+    return await api('get', `/shares/getByProject/${projectId}`).then((data) => {
+      setProject(data.reports);
+    });
   }, [projectId]);
   return (
     <>
@@ -63,17 +63,17 @@ const ViewInvestors = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h2 className="mb-0">
-                    Project
-                    <span style={{ TextColor: "green" }}> {project?.name}</span>
+                    {t('Project')}
+                    <span style={{ TextColor: 'green' }}> {project?.name}</span>
                   </h2>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Investor Name</th>
-                    <th scope="col">Investor's Shares</th>
-                    <th scope="col">Deposit Amount</th>
+                    <th scope="col">{t('Investor Name')}</th>
+                    <th scope="col">{t('Investor Shares')}</th>
+                    <th scope="col">{t('Deposit Amount')}</th>
                     <th scope="col" />
                   </tr>
                 </thead>

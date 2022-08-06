@@ -19,8 +19,11 @@
 
 // reactstrap components
 import { Container, Row, Col, Nav, NavItem, NavLink } from 'reactstrap';
-
+import { useTranslation } from 'react-i18next';
 const Footer = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
+  // const { t } = useTranslation;
   return (
     <footer className="footer">
       <Row className="align-items-center justify-content-xl-between">
@@ -28,13 +31,24 @@ const Footer = () => {
           <div className="copyright text-center text-xl-left text-muted">
             © {new Date().getFullYear()}{' '}
             <a style={{ pointerEvents: 'none' }} className="font-weight-bold ml-1">
-              Admin Panel
+              {t('Admin Panel')}
             </a>
-            &nbsp;Developed by{' '}
+            &nbsp;{t('Developed by')}{' '}
             <a className="font-weight-bold ml-1" href="https://www.falconconsulting.fr" rel="noopener noreferrer" target="_blank">
               Falcon Consulting
             </a>{' '}
-            - All rights reserved.
+            <button
+              onClick={() => {
+                if (language === 'fr') {
+                  i18n.changeLanguage('en');
+                } else {
+                  i18n.changeLanguage('fr');
+                }
+              }}
+            >
+              french
+            </button>
+            - {t('All rights reserved.')}
           </div>
         </Col>
 

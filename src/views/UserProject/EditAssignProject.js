@@ -1,30 +1,14 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import api from "../../api";
-import { Select } from "antd";
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col,
-} from "reactstrap";
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../api';
+import { Select } from 'antd';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col } from 'reactstrap';
 // core components
+import { useTranslation } from 'react-i18next';
 
-const EditAssignProject = ({
-  openModal,
-  handleModal,
-  project,
-  setProject,
-  getProjects,
-  getUserProjects,
-  investor,
-}) => {
+const EditAssignProject = ({ openModal, handleModal, project, setProject, getProjects, getUserProjects, investor }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const handleInput = (e) => {
     setProject({
       ...project,
@@ -33,7 +17,7 @@ const EditAssignProject = ({
   };
   const handleDepositeAmount = (e) => {
     if (e.target.value < 0) {
-      return toast.error("Deposit amount should be greater than 0");
+      return toast.error('Deposit amount should be greater than 0');
     }
     let shares = e.target.value / +project?.unit_share;
     shares = Math.round(shares * 100 + Number.EPSILON) / 100;
@@ -46,22 +30,21 @@ const EditAssignProject = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (project.shares == "") {
+    if (project.shares == '') {
       return toast.error("Share's required");
     }
-    if (project.deposit_amount == "") {
-      return toast.error("Deposit Amount is required");
+    if (project.deposit_amount == '') {
+      return toast.error('Deposit Amount is required');
     }
     if (parseFloat(project.shares) < 0.01) {
       return toast.error("Share's required");
     }
-    const total_shares =
-      parseInt(project.shares) - parseInt(project.old_shares);
+    const total_shares = parseInt(project.shares) - parseInt(project.old_shares);
     if (total_shares > parseInt(project.remaining_shares)) {
-      return toast.error("Shares should be lesser than remaining shares");
+      return toast.error('Shares should be lesser than remaining shares');
     }
-    api("put", `/shares/editAssignShare/${project?._id}`, project).then(() => {
-      toast.success("Project edited successfully");
+    api('put', `/shares/editAssignShare/${project?._id}`, project).then(() => {
+      toast.success('Project edited successfully');
       getProjects();
       getUserProjects();
       handleModal();
@@ -72,7 +55,7 @@ const EditAssignProject = ({
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Edit Project Shares
+          {t('Edit Project Shares')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -80,9 +63,9 @@ const EditAssignProject = ({
               <Form>
                 <div className="pl-lg-4">
                   <Row>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Project</label>
+                        <label className="form-control-label">{t('Project')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           readOnly
@@ -92,11 +75,9 @@ const EditAssignProject = ({
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">
-                          remaining_shares
-                        </label>
+                        <label className="form-control-label">{t('Remaining Shares')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           readOnly
@@ -108,13 +89,11 @@ const EditAssignProject = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: "red" }}>
-                            {project?.deposit_amount ? "" : "*"}{" "}
-                          </span>
-                          Deposit Amount
+                          <span style={{ color: 'red' }}>{project?.deposit_amount ? '' : '*'} </span>
+                          {t('Deposit Amount')}
                         </label>
                         <Input
                           className="form-control-alternative text-default"
@@ -126,11 +105,9 @@ const EditAssignProject = ({
                         />
                       </FormGroup>
                     </Col>
-                    <Col lg="4" style={{ margin: "auto" }}>
+                    <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">
-                          Assign Share
-                        </label>
+                        <label className="form-control-label">{t('Assign Share')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
@@ -150,10 +127,10 @@ const EditAssignProject = ({
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSubmit}>
-            Update
+            {t('Update')}
           </Button>
 
-          <Button onClick={handleModal}>Cancel</Button>
+          <Button onClick={handleModal}>{t('Cancel')}</Button>
         </ModalFooter>
       </Modal>
     </>
