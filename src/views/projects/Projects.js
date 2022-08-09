@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
 import {
   Badge,
   Card,
@@ -33,29 +33,31 @@ import {
   Table,
   Container,
   Row,
-} from "reactstrap";
-
+} from 'reactstrap';
+import { useTranslation } from 'react-i18next';
 // core components
-import AddProject from "./AddProject";
-import EditProject from "./EditProject";
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
+import AddProject from './AddProject';
+import EditProject from './EditProject';
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
 
 const Projects = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const history = useHistory();
   const updateStore = UpdateStore();
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [project, setProject] = useState({
-    _id: "",
-    name: "",
-    total_cost: "",
-    selling_price: "",
-    start_date: "",
-    end_date: "",
-    total_shares: "",
-    dispaly_picture: "",
-    city: "",
+    _id: '',
+    name: '',
+    total_cost: '',
+    selling_price: '',
+    start_date: '',
+    end_date: '',
+    total_shares: '',
+    dispaly_picture: '',
+    city: '',
   });
 
   const [projects, setProjects] = useState([]);
@@ -70,16 +72,16 @@ const Projects = () => {
     mm = today.getMonth() + 1;
     yyyy = today.getFullYear();
     if (mm < 10) {
-      mm = "0" + mm;
+      mm = '0' + mm;
     }
     if (dd < 10) {
-      dd = "0";
+      dd = '0';
     }
-    return yyyy + "-" + mm + "-" + dd;
+    return yyyy + '-' + mm + '-' + dd;
   };
 
   const getProjects = async () => {
-    return await api("get", "/projects").then((data) => {
+    return await api('get', '/projects').then((data) => {
       setProjects(data.projects);
       updateStore({
         projects: data.projects.length,
@@ -113,8 +115,8 @@ const Projects = () => {
   };
 
   const handleDelete = (id) => {
-    api("delete", `/projects/${id}`).then(() => {
-      toast.success("Project deleted successfully");
+    api('delete', `/projects/${id}`).then(() => {
+      toast.success('Project deleted successfully');
       getProjects();
     });
   };
@@ -133,28 +135,24 @@ const Projects = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0">Projects</h3>
-                  <Button
-                    color="primary"
-                    href="#pablo"
-                    onClick={handleModal}
-                    size="md"
-                  >
+                  <h3 className="mb-0">{t('Projects')}</h3>
+                  <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
-                    Add Project
+
+                    {t('Add Project')}
                   </Button>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-flush">
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col"> Name</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Total Cost</th>
-                    <th scope="col">Selling Price</th>
-                    <th scope="col">Total Shares</th>
-                    <th scope="col">Created At</th>
+                    <th scope="col">{t('Name')} </th>
+                    <th scope="col">{t('Start Date')}</th>
+                    <th scope="col">{t('End Date')}</th>
+                    <th scope="col">{t('Total Cost')}</th>
+                    <th scope="col">{t('Selling Price')}</th>
+                    <th scope="col">{t('Total Shares')}</th>
+                    <th scope="col">{t('Created At')}</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -182,25 +180,14 @@ const Projects = () => {
                               <i className="fas fa-ellipsis-v" />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                onClick={() => navtoInvestors(item)}
-                                href="#pablo"
-                                className="text-success"
-                              >
-                                view investors
+                              <DropdownItem onClick={() => navtoInvestors(item)} href="#pablo" className="text-success">
+                                {t('view investors')}
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => handleEditModal(item)}
-                              >
-                                Edit
+                              <DropdownItem href="#pablo" onClick={() => handleEditModal(item)}>
+                                {t('Edit')}
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                className="text-danger"
-                                onClick={() => handleDelete(item._id)}
-                              >
-                                Delete
+                              <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(item._id)}>
+                                {t('Delete')}
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>
@@ -269,12 +256,7 @@ const Projects = () => {
           </div>
         </Row>
         {openModal && (
-          <AddProject
-            openModal={openModal}
-            handleModal={handleModal}
-            getProjects={getProjects}
-            disableDates={disableDates}
-          />
+          <AddProject openModal={openModal} handleModal={handleModal} getProjects={getProjects} disableDates={disableDates} />
         )}
         {editModal && (
           <EditProject

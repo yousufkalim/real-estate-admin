@@ -5,12 +5,15 @@ import Select from 'react-select';
 import moment from 'moment';
 import View from '../../components/views';
 import FilePicker from '../../components/FilePicker';
+import { useTranslation } from 'react-i18next';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col, Label } from 'reactstrap';
 // core components
 
 const { Option } = Select;
 
 const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   useEffect(() => {
     getProjects();
   }, []);
@@ -114,7 +117,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Add a News
+          {t('Add a News')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -125,7 +128,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                     <Col lg="12">
                       <FormGroup style={{ width: '60%' }}>
                         <label className="form-control-label">
-                          Add Main Picture <View url={news?.pictures} />
+                          {t('Add Main Picture')} <View url={news?.pictures} />
                         </label>
                         <FilePicker
                           lableClassName="form-control-label"
@@ -150,7 +153,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{news.project ? '' : '*'} </span>
-                          Select Project
+                          (t{'Select Project'})
                         </label>{' '}
                         <Select
                           onChange={handleProjectChange}
@@ -168,7 +171,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{news.news_date ? '' : '*'} </span>
-                          news Date
+                          {t('News Date')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative"
@@ -185,7 +188,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                     <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label" htmlFor="input-date">
-                          Project End Date
+                          {t('End Date')}
                         </label>
                         <Input
                           className="form-control-alternative"
@@ -203,11 +206,11 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                   <Row>
                     <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Total Cost</label>
+                        <label className="form-control-label">{t('Total Cost')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter news's total cost here"
+                          placeholder={t('Enter total cost here')}
                           type="tel"
                           value={news.total_cost}
                           name="total_cost"
@@ -217,11 +220,11 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
                     </Col>
                     <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Selling Price</label>
+                        <label className="form-control-label">{t('Selling Price')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter news's selling price here"
+                          placeholder={t('Enter selling price here')}
                           type="tel"
                           value={news.selling_price}
                           name="selling_price"
@@ -237,10 +240,10 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSubmit}>
-            Save
+            {t('Save')}
           </Button>
 
-          <Button onClick={handleModal}>Cancel</Button>
+          <Button onClick={handleModal}>{t('Cancel')}</Button>
         </ModalFooter>
       </Modal>
     </>

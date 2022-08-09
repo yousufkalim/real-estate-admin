@@ -41,8 +41,11 @@ import AddNews from './AddNews';
 import EditNews from './EditNews';
 import Header from 'components/Headers/Header.js';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const Users = () => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [allnews, setAllNews] = useState([]);
@@ -121,21 +124,21 @@ const Users = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0">News</h3>
+                  <h3 className="mb-0">{t('News')}</h3>
                   <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
-                    Add News
+                    {t('Add News')}
                   </Button>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-flush">
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Project Name </th>
-                    <th cope="col">New Total Cost</th>
-                    <th scope="col">New Selling Price</th>
-                    <th scope="col">News Date</th>
-                    <th scope="col">New End Date</th>
+                    <th scope="col">{t('Project Name')}</th>
+                    <th cope="col">{t('New Total Cost')}</th>
+                    <th scope="col">{t('New Selling Price')}</th>
+                    <th scope="col">{t('News Date')}</th>
+                    <th scope="col">{t('New End Date')}</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -162,10 +165,10 @@ const Users = () => {
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
                               <DropdownItem href="#pablo" onClick={() => handleEditModal(item)}>
-                                Edit
+                                {t('Edit')}
                               </DropdownItem>
                               <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(item._id)}>
-                                Delete
+                                {t('Delete')}
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>

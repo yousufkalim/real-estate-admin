@@ -19,6 +19,7 @@
 
 // reactstrap components
 import { Container, Row, Col, Nav, NavItem, NavLink } from 'reactstrap';
+
 import { useTranslation } from 'react-i18next';
 const Footer = () => {
   const { i18n, t } = useTranslation();
@@ -39,14 +40,14 @@ const Footer = () => {
             </a>{' '}
             <button
               onClick={() => {
-                if (language === 'fr') {
+                if (language === 'french') {
                   i18n.changeLanguage('en');
                 } else {
                   i18n.changeLanguage('fr');
                 }
               }}
             >
-              french
+              {language}
             </button>
             - {t('All rights reserved.')}
           </div>

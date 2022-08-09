@@ -15,55 +15,58 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Index.js";
-import Users from "views/users/Users";
-import News from "views/news/News";
-import Projects from "views/projects/Projects";
-import Register from "views/Register.js";
-import Login from "views/Login.js";
+import { useTranslation } from 'react-i18next';
+
+import Index from 'views/Index.js';
+import Users from 'views/users/Users';
+import News from 'views/news/News';
+import Projects from 'views/projects/Projects';
+import Register from 'views/Register.js';
+import Login from 'views/Login.js';
 
 const routes = [
   {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-red",
+    path: '/index',
+    name: 'Dashboard',
+    icon: 'ni ni-tv-2 text-red',
     component: Index,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
-    path: "/users",
-    name: "All  Investors",
-    icon: "ni ni-single-02 text-primary",
+    path: '/users',
+    name: 'All  Investors',
+    icon: 'ni ni-single-02 text-primary',
     component: Users,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
-    path: "/projects",
-    name: "All Projects",
-    icon: "ni ni-shop text-green",
+    path: '/projects',
+    name: 'All Projects',
+    icon: 'ni ni-shop text-green',
     component: Projects,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
-    path: "/news",
-    name: "All News",
-    icon: "ni ni-collection text-teal",
+    path: '/news',
+    name: 'All News',
+    icon: 'ni ni-collection text-teal',
     component: News,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-key-25 text-info",
+    path: '/register',
+    name: 'Register',
+    icon: 'ni ni-key-25 text-info',
     component: Register,
-    layout: "/auth",
+    layout: '/auth',
   },
   {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-circle-08 text-pink",
+    path: '/login',
+    name: 'Login',
+    icon: 'ni ni-circle-08 text-pink',
     component: Login,
-    layout: "/auth",
+    layout: '/auth',
   },
 ];
+
 export default routes;
