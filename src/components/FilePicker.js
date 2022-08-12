@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col, Label } from 'reactstrap';
-
+import { useTranslation } from 'react-i18next';
 function FilePicker(props) {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   return (
     <>
       <label
@@ -29,7 +31,7 @@ function FilePicker(props) {
             }}
           >
             <i class="fas fa-upload" style={{ marginRight: '10px' }}></i>
-            <> Add File</>
+            <> {t('Add File')} </>
           </div>
         </div>
         <div

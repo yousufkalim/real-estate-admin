@@ -7,26 +7,19 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/bootstrap.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col, Label } from 'reactstrap';
 // core components
-
+import { useTranslation } from 'react-i18next';
 const { Option } = Select;
 
 const AddUser = ({ openModal, handleModal, getUsers }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   let [user, setUser] = useState({
     first_name: '',
     last_name: '',
     phone: '',
     country_code: '',
   });
-  // useEffect(() => {
-  //   fetch('https://extreme-ip-lookup.com/json/')
-  //     .then((res) => res.json())
-  //     .then((response) => {
-  //       console.log('Country is : ', response);
-  //     })
-  //     .catch((data, status) => {
-  //       console.log('Request failed:', data);
-  //     });
-  // }, []);
+
   const [phone, setPhone] = useState('+92');
   const handleInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -67,7 +60,7 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Add a Investor
+          {t('Add a Investor')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -80,12 +73,12 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{user.first_name ? '' : '*'} </span>
-                          First Name
+                          {t('First Name')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter investor's first name here"
+                          placeholder={t('Enter investor first name here')}
                           type="text"
                           value={user.first_name}
                           maxLength="15"
@@ -100,12 +93,12 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{user.last_name ? '' : '*'} </span>
-                          Last Name
+                          {t('Last Name')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter investor's last name here"
+                          placeholder={t('Enter investor first name here')}
                           type="text"
                           value={user.last_name}
                           name="last_name"
@@ -120,7 +113,7 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> Phone Number
+                          <span style={{ color: 'red' }}>{phone ? '' : '*'} </span> {t('Phone')}
                         </label>
                         <PhoneInput country={'eg'} enableSearch={true} value={phone} onChange={phoneChange} />
                       </FormGroup>
@@ -151,10 +144,9 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSubmit}>
-            Save
+            {t('Save')}
           </Button>
-
-          <Button onClick={handleModal}>Cancel</Button>
+          <Button onClick={handleModal}> {t('Cancel')}</Button>
         </ModalFooter>
       </Modal>
     </>

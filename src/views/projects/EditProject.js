@@ -7,8 +7,11 @@ import FilePicker from '../../components/FilePicker';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col } from 'reactstrap';
 // core components
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 const { Option } = Select;
 const EditProject = ({ openModal, handleModal, project, setProject, getProjects, disableDates }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const handleInput = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
@@ -81,7 +84,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Edit a Project
+          {t('Edit a Project')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -92,7 +95,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                     <Col lg="12">
                       <FormGroup style={{ width: '60%' }}>
                         <label className="form-control-label">
-                          Add Main Picture <View url={project?.dispaly_picture} />
+                          {t('Add Main Picture')} <View url={project?.dispaly_picture} />
                         </label>
                         <FilePicker
                           lableClassName="form-control-label"
@@ -113,12 +116,12 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{project.name ? '' : '*'} </span>
-                          Name
+                          {t('Name')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's name here"
+                          placeholder={t('Enter project name here')}
                           type="text"
                           value={project.name}
                           name="name"
@@ -131,12 +134,12 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{project.total_shares ? '' : '*'} </span>
-                          Total Shares
+                          {t('Total Shares')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's total_shares here"
+                          placeholder={t('Enter project total shares here')}
                           type="tel"
                           value={project?.total_shares}
                           name="total_shares"
@@ -149,12 +152,12 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{project.city ? '' : '*'} </span>
-                          City
+                          {t('City')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's city here"
+                          placeholder={t('Enter project city here')}
                           type="city"
                           value={project.city}
                           name="city"
@@ -168,7 +171,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                       <FormGroup>
                         <label className="form-control-label" htmlFor="input-date">
                           <span style={{ color: 'red' }}>{project?.start_date ? '' : '*'} </span>
-                          Start Date
+                          {t('Start Date')}
                         </label>
                         <Input
                           className="form-control-alternative"
@@ -184,7 +187,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
                         <label className="form-control-label">
-                          <span style={{ color: 'red' }}>{project?.end_date ? '' : '*'} </span> End Date
+                          <span style={{ color: 'red' }}>{project?.end_date ? '' : '*'} </span> {t('End Date')}
                         </label>
                         <Input
                           className="form-control-alternative"
@@ -205,12 +208,12 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{project.total_cost ? '' : '*'} </span>
-                          Total Cost
+                          {t('Total Cost')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's total cost here"
+                          placeholder={t('Enter project total cost here')}
                           type="tel"
                           value={project?.total_cost}
                           name="total_cost"
@@ -223,12 +226,12 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                         <label className="form-control-label">
                           {' '}
                           <span style={{ color: 'red' }}>{project.selling_price ? '' : '*'} </span>
-                          Selling Price
+                          {t('Selling Price')}
                         </label>{' '}
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
-                          placeholder="Enter project's selling price here"
+                          placeholder={t('Enter project selling price here')}
                           type="tel"
                           value={project?.selling_price}
                           name="selling_price"
@@ -238,7 +241,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
                     </Col>
                     <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Remaining Share</label>
+                        <label className="form-control-label"> {t('Remaining Share')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
