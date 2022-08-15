@@ -23,7 +23,8 @@ import News from 'views/news/News';
 import Projects from 'views/projects/Projects';
 import Register from 'views/Register.js';
 import Login from 'views/Login.js';
-
+// const { i18n, t } = useTranslation();
+// const { language } = i18n;
 const routes = [
   {
     path: '/index',
