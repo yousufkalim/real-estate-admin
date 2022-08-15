@@ -91,7 +91,7 @@ const Users = () => {
 
   const handleDelete = (item) => {
     api('delete', `/investors/${item}`).then(() => {
-      toast.success('User deleted successfully');
+      toast.success(`${t('User deleted successfully')}`);
       getUsers();
     });
   };

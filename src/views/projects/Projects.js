@@ -116,7 +116,7 @@ const Projects = () => {
 
   const handleDelete = (id) => {
     api('delete', `/projects/${id}`).then(() => {
-      toast.success('Project deleted successfully');
+      toast.success(`${t('Project deleted successfully')}`);
       getProjects();
     });
   };

@@ -46,18 +46,18 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews, disableDa
     }
     if (news.end_date && news.news_date) {
       if (news.end_date < news.news_date) {
-        return toast.error('End date can never be earlier than start date');
+        return toast.error(`${t('End date can never be earlier than start date')}`);
       }
     }
     if (news.selling_price) {
       if (parseInt(news.selling_price) < 1) {
-        return toast.error('Selling price should be greater than 1');
+        return toast.error(`${t('Selling price should be greater than 1')}`);
       }
       formData.append('selling_price', news.selling_price);
     }
     if (news.total_cost) {
       if (parseInt(news.total_cost) < 1) {
-        return toast.error('Total Cost should be greater than 1');
+        return toast.error(`${t('Total Cost should be greater than 1')}`);
       }
       formData.append('total_cost', news.total_cost);
     }
@@ -67,7 +67,7 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews, disableDa
       });
     }
     api('put', `/news/${news?._id}`, formData).then((res) => {
-      toast.success('News edited successfully');
+      toast.success(`${t('News edited successfully')}`);
       getAllNews();
       handleModal();
     });

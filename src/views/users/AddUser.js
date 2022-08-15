@@ -28,20 +28,20 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user.first_name == '') {
-      return toast.error("Please enter user's first name");
+      return toast.error(`${t("Please enter user's first name")}`);
     }
     if (user.last_name == '') {
-      return toast.error("Please enter user's last name");
+      return toast.error(`${t("Please enter user's last name")}`);
     }
     if (phone == '') {
-      return toast.error('phone number is required');
+      return toast.error(`${t('phone number is required')}`);
     }
     if (phone.length < 9) {
-      return toast.error('phone number atleast 8 characters long');
+      return toast.error(`${t('phone number atleast 8 characters long')}`);
     }
     user.phone = phone;
     api('post', '/investors', user).then((res) => {
-      toast.success('User added successfully');
+      toast.success(`${t('User added successfully')}`);
       getUsers();
       handleModal();
     });
