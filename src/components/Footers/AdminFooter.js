@@ -40,7 +40,7 @@ const Footer = () => {
             </a>{' '}
             <button
               onClick={() => {
-                if (language === 'french') {
+                if (language === 'fr') {
                   i18n.changeLanguage('en');
                 } else {
                   i18n.changeLanguage('fr');
