@@ -38,17 +38,6 @@ const Footer = () => {
             <a className="font-weight-bold ml-1" href="https://www.falconconsulting.fr" rel="noopener noreferrer" target="_blank">
               Falcon Consulting
             </a>{' '}
-            <button
-              onClick={() => {
-                if (language === 'fr') {
-                  i18n.changeLanguage('en');
-                } else {
-                  i18n.changeLanguage('fr');
-                }
-              }}
-            >
-              {language}
-            </button>
             - {t('All rights reserved.')}
           </div>
         </Col>

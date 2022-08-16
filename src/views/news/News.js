@@ -108,7 +108,7 @@ const Users = () => {
 
   const handleDelete = (item) => {
     api('delete', `/news/${item}`).then(() => {
-      toast.success('News deleted successfully');
+      toast.success(`${t('News deleted successfully')}`);
       getAllNews();
     });
   };

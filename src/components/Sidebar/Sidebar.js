@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { NavLink as NavLinkRRD, Link } from 'react-router-dom';
 // nodejs library to set properties for components
 import { PropTypes } from 'prop-types';
-
+import { useTranslation } from 'react-i18next';
 // reactstrap components
 import {
   Button,
@@ -53,6 +53,7 @@ import {
 } from 'reactstrap';
 
 const Sidebar = (props) => {
+  const { t } = useTranslation();
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -74,7 +75,7 @@ const Sidebar = (props) => {
           <NavItem key={key}>
             <NavLink to={prop.layout + prop.path} tag={NavLinkRRD} onClick={closeCollapse} activeClassName="active">
               <i className={prop.icon} />
-              {prop.name}
+              {t(prop.name)}
             </NavLink>
           </NavItem>
         );
@@ -106,7 +107,7 @@ const Sidebar = (props) => {
         {/* Brand */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            <img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
+            <img alt={logo.imgAlt} style={{ minHeight: '5.5rem' }} className="navbar-brand-img" src={logo.imgSrc} />
           </NavbarBrand>
         ) : null}
         {/* User */}
@@ -153,7 +154,7 @@ const Sidebar = (props) => {
               <DropdownItem divider />
               <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                 <i className="ni ni-user-run" />
-                <span>Logout</span>
+                <span> {t('Logout')}</span>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

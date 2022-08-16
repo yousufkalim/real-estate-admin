@@ -17,6 +17,8 @@
 */
 import { Link } from 'react-router-dom';
 import { Store } from 'StoreContext';
+import france from '../../assets/img/icons/common/fr.png';
+import eng from '../../assets/img/icons/common/eng.png';
 // reactstrap components
 import {
   DropdownMenu,
@@ -35,8 +37,14 @@ import {
   Media,
 } from 'reactstrap';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const AdminNavbar = (props) => {
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
   const { user } = Store();
   const handleLogout = () => {
     localStorage.setItem('token', '');
@@ -48,13 +56,34 @@ const AdminNavbar = (props) => {
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
         <Container fluid>
-          <div className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">{props.brandText}</div>
+          <div className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"> {t(props.brandText)}</div>
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <Media className="ml-2 d-none d-lg-block">
-                    <span className="mb-0 text-sm font-weight-bold">{user?.name}</span>
+                    <span className="mb-0 text-sm font-weight-bold">Translation</span>
+                  </Media>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownItem href="#pablo" onClick={() => changeLanguage('fr')}>
+                  <span>
+                    <img src={france} width="15%" alt="" /> &nbsp; French
+                  </span>
+                </DropdownItem>
+                <DropdownItem href="#pablo" onClick={() => changeLanguage('en')}>
+                  <span>
+                    <img src={eng} width="15%" alt="" /> &nbsp; English
+                  </span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav>
+              <DropdownToggle className="pr-0" nav>
+                <Media className="align-items-center">
+                  <Media className="ml-2 d-none d-lg-block">
+                    <span className="mb-0 text-sm font-weight-bold">{t(user?.name)}</span>
                   </Media>
                 </Media>
               </DropdownToggle>
@@ -81,7 +110,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem divider /> */}
                 <DropdownItem href="#pablo" onClick={handleLogout}>
                   <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                  <span>{t('Logout')}</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

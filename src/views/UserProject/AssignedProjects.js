@@ -61,7 +61,6 @@ const AssignedProjects = () => {
 
   const getUserProjects = async () => {
     return await api('get', `/shares/${investorId}`).then((data) => {
-      console.log(data, 'd');
       setUserProjects(data?.shares);
     });
   };
@@ -98,7 +97,7 @@ const AssignedProjects = () => {
   const handleDelete = (item) => {
     // return console.log(item, "i");
     return api('put', `/shares/${item._id}`, item).then(() => {
-      toast.success('Project unassigned successfully');
+      toast.success(`${t('Project unassigned successfully')}`);
       getUserProjects();
       getProjects();
     });

@@ -44,7 +44,7 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file.type.includes('image')) {
-      toast.error('Only image can be selected');
+      toast.error(`${t('Only image can be selected')}`);
       return;
     }
     setPictures({
@@ -68,21 +68,21 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
     e.preventDefault();
     let formData = new FormData();
     if (news.project == '') {
-      return toast.error('Please  select project ');
+      return toast.error(`${t('Please  select project')}`);
     }
     if (news.news_date == '') {
-      return toast.error('News Date is required');
+      return toast.error(`${t('News Date is required')}`);
     }
     if (news.end_date && news.news_date) {
       if (news.end_date < news.news_date) {
-        return toast.error('End date can never be earlier than start date');
+        return toast.error(`${t('End date can never be earlier than start date')}`);
       }
     }
     formData.append('project', news.project);
     formData.append('news_date', news.news_date);
 
     if (news.end_date == '' && news.selling_price == '' && news.total_cost == '' && pictures.files.length < 1) {
-      return toast.error('Please  add one more field atleast ');
+      return toast.error(`${t('Please  add one more field atleast ')}`);
     }
 
     if (pictures.files.length > 0) {
@@ -96,18 +96,18 @@ const AddNews = ({ openModal, handleModal, getNews, Projects, disableDates }) =>
 
     if (news.selling_price) {
       if (parseInt(news.selling_price) < 1) {
-        return toast.error('Selling price should be greater than 1');
+        return toast.error(`${t('Selling price should be greater than 1')}`);
       }
       formData.append('selling_price', news.selling_price);
     }
     if (news.total_cost) {
       if (parseInt(news.total_cost) < 1) {
-        return toast.error('Total Cost should be greater than 1');
+        return toast.error(`${t('Total Cost should be greater than 1')}`);
       }
       formData.append('total_cost', news.total_cost);
     }
     api('post', '/news', formData).then((res) => {
-      toast.success('News added successfully');
+      toast.success(`${t('News added successfully')}`);
       getNews();
       handleModal();
     });

@@ -22,7 +22,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file.type.includes('image')) {
-      toast.error('Only image can be selected');
+      toast.error(`${t('Only image can be selected')}`);
       return;
     }
     setProject({ ...project, [e.target.name]: e.target.files[0] });
@@ -31,30 +31,30 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
   const handleSubmit = (e) => {
     e.preventDefault();
     if (project.name == '') {
-      return toast.error("Please enter project's name");
+      return toast.error(`${t("Please enter project's name")}`);
     }
     if (project.start_date == '') {
-      return toast.error('Please enter start date');
+      return toast.error(`${t('Please enter start date')}`);
     }
     if (project.end_date == '') {
-      return toast.error('Please enter start date');
+      return toast.error(`${t('Please enter start date')}`);
     }
     if (project.end_date < project.start_date) {
-      return toast.error('End date can never be earlier than start date');
+      return toast.error(`${t('End date can never be earlier than start date')}`);
     }
     if (project.total_cost == '') {
-      return toast.error('Please enter total cost');
+      return toast.error(`${t('Please enter total cost')}`);
     }
     if (project.selling_price == '') {
-      return toast.error('Please enter selling_price ');
+      return toast.error(`${t('Please enter selling price')}`);
     }
     if (project?.total_shares == '') {
-      return toast.error('Total shares required');
+      return toast.error(`${t('Total shares required')}`);
     }
     if (parseInt(project?.total_shares) < parseInt(project?.old_shares)) {
       const remaining_shares = parseInt(project?.old_shares) - parseInt(project?.total_shares);
       if (parseInt(project.remaining_shares) < remaining_shares) {
-        return toast.error('All shares has been  assigned you cant decrease shares now');
+        return toast.error(`${t('All shares has been  assigned you cant decrease shares now')}`);
       }
     }
     let formData = new FormData();
@@ -75,7 +75,7 @@ const EditProject = ({ openModal, handleModal, project, setProject, getProjects,
     }
 
     api('put', '/projects/update', formData).then((res) => {
-      toast.success('project edited successfully');
+      toast.success(`${t('project edited successfully')}`);
       getProjects();
       handleModal();
     });

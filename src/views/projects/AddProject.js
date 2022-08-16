@@ -35,7 +35,7 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file.type.includes('image')) {
-      toast.error('Only image can be selected');
+      toast.error(`${t('Only image can be selected')}`);
       return;
     }
     setProject({ ...project, [e.target.name]: e.target.files[0] });
@@ -44,23 +44,23 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (project.name == '') {
-      return toast.error("Please enter project's name");
+      return toast.error(`${t("Please enter project's name")}`);
     }
     if (project.start_date == '') {
-      return toast.error('Please enter start date');
+      return toast.error(`${t('Please enter start date')}`);
     }
     if (project.end_date == '') {
-      return toast.error('Please enter start date');
+      return toast.error(`${t('Please enter start date')}`);
     }
     if (project.end_date < project.start_date) {
-      return toast.error('End date can never be earlier than start date');
+      return toast.error(`${t('End date can never be earlier than start date')}`);
     }
     if (project.total_cost == '') {
-      return toast.error('Please enter total cost');
+      return toast.error(`${t('Please enter total cost')}`);
     }
 
     if (project.selling_price == '') {
-      return toast.error('Please enter selling price ');
+      return toast.error(`${t('Please enter selling price')}`);
     }
     let formData = new FormData();
     formData.append('name', project.name);
@@ -78,7 +78,7 @@ const AddProject = ({ openModal, handleModal, getProjects, disableDates }) => {
       formData.append('total_shares', project.total_shares);
     }
     api('post', '/projects', formData).then((res) => {
-      toast.success('Project added successfully');
+      toast.success(`${t('Project added successfully')}`);
       getProjects();
       handleModal();
     });

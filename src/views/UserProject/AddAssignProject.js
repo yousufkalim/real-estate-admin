@@ -4,8 +4,10 @@ import api from '../../api';
 import Select from 'react-select';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, FormGroup, Form, Input, Row, Col } from 'reactstrap';
 // core components
-
+import { useTranslation } from 'react-i18next';
 const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserProjects, getProjects }) => {
+  const { i18n, t } = useTranslation();
+  const { language } = i18n;
   const [project, setProject] = useState({
     project: '',
     shares: 0,
@@ -17,7 +19,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
   const numberHandler = (e) => {
     const validatedValue = e.target.value.replace(/[^0-9]/g, '');
     if (validatedValue < 0) {
-      return toast.error('Deposit amount should be greater than 0');
+      return toast.error(`${t('Deposit amount should be greater than 0')}`);
     }
     let shares = validatedValue / +project?.unit_share;
     // let remaining_shares = +project?.remaining_shares - shares;
@@ -45,19 +47,19 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
   const handleSubmit = (e) => {
     e.preventDefault();
     if (project.project == '') {
-      return toast.error('Project is required');
+      return toast.error(`${t('Please  select project')}`);
     }
     if (project.deposit_amount == '') {
-      return toast.error('Deposit Amount is required');
+      return toast.error(`${t('Deposit Amount is required')}`);
     }
     if (project.shares == '') {
-      return toast.error('Shares Required');
+      return toast.error(`${t('Shares Required')}`);
     }
     if (parseInt(project.remaining_shares) < parseInt(project.shares)) {
-      return toast.error('Shares should be lesser than remaining shares');
+      return toast.error(`${t('Shares should be lesser than remaining shares')}`);
     }
     return api('post', `/shares/assignShare`, project).then(() => {
-      toast.success('Share has been added successfully');
+      toast.success(`${t('Share has been added successfully')}`);
       getUserProjects();
       getProjects();
       handleModal();
@@ -68,7 +70,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
     <>
       <Modal isOpen={openModal} size="xl" centered>
         <ModalHeader charCode="X" toggle={handleModal}>
-          Add Project Shares
+          {t('Add Project Shares')}
         </ModalHeader>
         <ModalBody>
           <Row>
@@ -78,7 +80,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
                   <Row>
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Project</label>
+                        <label className="form-control-label">{t('Project')}</label>
                         <Select
                           onChange={handleProjectChange}
                           name="project"
@@ -96,7 +98,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
                       <FormGroup>
                         <label className="form-control-label">
                           <span style={{ color: 'red' }}>{project?.deposit_amount ? '' : '*'} </span>
-                          Deposit Amount
+                          {t('Deposit Amount')}
                         </label>
                         <Input
                           className="form-control-alternative text-default"
@@ -113,7 +115,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
                   <Row>
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">remaining_shares</label>
+                        <label className="form-control-label">{t('Remaining Share')}</label>
                         <Input
                           readOnly
                           className="form-control-alternative text-default"
@@ -126,7 +128,7 @@ const AddAssignProject = ({ openModal, handleModal, Projects, investor, getUserP
                     </Col>
                     <Col lg="6" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">Assign Share</label>
+                        <label className="form-control-label">{t('Assign Share')}</label>
                         <Input
                           className="form-control-alternative text-default"
                           required={true}
