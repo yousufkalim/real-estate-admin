@@ -13,6 +13,7 @@ i18n
         translations: {
           'All rights reserved.': 'All rights reserved.',
           Investors: 'Investors',
+          'Internal server error': 'Internal server error',
           'Admin Panel': 'Admin Panel',
           'Developed by': 'Developed by',
           'Page visits': 'Page visits',
@@ -135,12 +136,20 @@ i18n
           fr: 'English',
           en: 'French',
           'Change Language': 'Change Language',
+          'Phone Number is already taken': 'Phone Number is already taken',
+          'Phone already associated with another user': 'Phone already associated with another user',
+          'Internal server error': 'Internal server error',
+          'Request failed with status code 500': 'Request failed with status code 500',
         },
       },
       fr: {
         translations: {
+          'Phone Number is already taken': 'le numéro de téléphone est déjà pris',
+          'Request failed with status code 500': "la demande a échoué avec le code d'état 500",
+          'Phone already associated with another user': 'téléphone déjà associé à un autre utilisateur',
           en: 'française',
           fr: 'English',
+          'Internal server error': 'erreur interne du serveur',
           'Change Language': 'changer de langue',
           Logout: 'se déconnecter',
           Dashboard: 'tableau de bord',

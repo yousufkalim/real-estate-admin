@@ -42,10 +42,16 @@ import EditNews from './EditNews';
 import Header from 'components/Headers/Header.js';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-
+import { titleCase } from 'components/dateFormat';
 const Users = () => {
   const { i18n, t } = useTranslation();
   const { language } = i18n;
+  var options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [allnews, setAllNews] = useState([]);
@@ -149,8 +155,18 @@ const Users = () => {
                         <td>{item?.project?.name}</td>
                         <td>{item?.total_cost ? item.total_cost : '_'}</td>
                         <td>{item?.selling_price ? item.selling_price : '_'}</td>
-                        <td>{item?.news_date ? new Date(item.news_date).toDateString() : '_'}</td>
-                        <td>{item?.end_date ? new Date(item.end_date).toDateString() : '_'}</td>
+                        <td>
+                          {'_'}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.news_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.news_date).toDateString()}
+                        </td>
+                        <td>
+                          {'_'}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.end_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.end_date).toDateString()}
+                        </td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle

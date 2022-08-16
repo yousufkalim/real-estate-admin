@@ -40,8 +40,14 @@ import AddProject from './AddProject';
 import EditProject from './EditProject';
 import Header from 'components/Headers/Header.js';
 import { toast } from 'react-toastify';
-
+import { titleCase } from 'components/dateFormat';
 const Projects = () => {
+  var options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   const { i18n, t } = useTranslation();
   const { language } = i18n;
   const history = useHistory();
@@ -161,12 +167,28 @@ const Projects = () => {
                     return (
                       <tr>
                         <td>{item?.name}</td>
-                        <td>{new Date(item?.start_date).toDateString()}</td>
-                        <td>{new Date(item?.end_date).toDateString()}</td>
+
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.start_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.start_date).toDateString()}
+                        </td>
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.end_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.end_date).toDateString()}
+                        </td>
                         <td>{item?.total_cost}</td>
                         <td>{item?.selling_price}</td>
                         <td>{item?.total_shares}</td>
-                        <td>{new Date(item.createdAt).toDateString()}</td>
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.createdAt).toLocaleDateString('fr-FR', options))
+                            : new Date(item.createdAt).toDateString()}
+                        </td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle

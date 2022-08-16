@@ -38,7 +38,9 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
     if (phone.length < 9) {
       return toast.error(`${t('phone number atleast 8 characters long')}`);
     }
-    user.phone = '+' + phone;
+    if (!phone.includes('+')) {
+      user.phone = '+' + phone;
+    }
 
     api('put', `/investors/${user._id}`, user).then((res) => {
       toast.success(`${t('User edited successfully')}`);
