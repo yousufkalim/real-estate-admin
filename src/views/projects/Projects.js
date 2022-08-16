@@ -167,8 +167,19 @@ const Projects = () => {
                     return (
                       <tr>
                         <td>{item?.name}</td>
-                        <td>{new Date(item?.start_date).toDateString()}</td>
-                        <td>{new Date(item?.end_date).toDateString()}</td>
+
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.start_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.start_date).toDateString()}
+                        </td>
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.end_date).toLocaleDateString('fr-FR', options))
+                            : new Date(item.end_date).toDateString()}
+                        </td>
                         <td>{item?.total_cost}</td>
                         <td>{item?.selling_price}</td>
                         <td>{item?.total_shares}</td>
