@@ -148,7 +148,7 @@ const EditNews = ({ openModal, handleModal, news, setNews, getAllNews, disableDa
                     </Col>
                     <Col lg="4" style={{ margin: 'auto' }}>
                       <FormGroup>
-                        <label className="form-control-label">End Date</label>
+                        <label className="form-control-label">{t('End Date')}</label>
                         <Input
                           className="form-control-alternative"
                           id="input-date"

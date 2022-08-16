@@ -57,17 +57,17 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div className="col" style={{ paddingLeft: '0px' }}>
                         <CardTitle tag="h5" className="text-uppercase text-muted mb-0">
                           {t('Total Investors')}
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{store.investors}</span>
                       </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
                           <i className="fas fa-chart-bar" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </CardBody>
                 </Card>
@@ -76,17 +76,17 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div style={{ paddingLeft: '0px' }} className="col">
                         <CardTitle tag="h5" className="text-uppercase text-muted mb-0">
                           {t('Total Projects')}
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{store.projects}</span>
                       </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
                           <i className="fas fa-chart-pie" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </CardBody>
                 </Card>

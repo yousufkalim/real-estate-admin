@@ -130,11 +130,21 @@ i18n
           'project edited successfully': 'project edited successfully',
           'All shares has been  assigned you cant decrease shares now':
             'All shares has been  assigned you cant decrease shares now',
+          Dashboard: 'Dashboard',
+          Logout: 'Logout',
+          fr: 'English',
+          en: 'French',
+          'Change Language': 'Change Language',
         },
       },
       fr: {
         translations: {
-          'Total shares required': "Nombre total d'actions requises",
+          en: 'française',
+          fr: 'English',
+          'Change Language': 'changer de langue',
+          Logout: 'se déconnecter',
+          Dashboard: 'tableau de bord',
+          'Total shares required': "nombre total d'actions requises",
           'All shares has been  assigned you cant decrease shares now':
             'toutes les actions ont été attribuées, vous ne pouvez pas diminuer les actions maintenant',
           'project edited successfully': 'projet édité avec succès',
