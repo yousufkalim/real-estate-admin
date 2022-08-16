@@ -42,7 +42,14 @@ import AssignedProjects from '../UserProject/AssignedProjects';
 import Header from 'components/Headers/Header.js';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { titleCase } from 'components/dateFormat';
 const Users = () => {
+  var options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   const { i18n, t } = useTranslation();
   const { language } = i18n;
   const [openModal, setOpenModal] = useState(false);
@@ -134,7 +141,12 @@ const Users = () => {
                         <td>{item.first_name}</td>
                         <td>{item.last_name}</td>
                         <td>{item.phone}</td>
-                        <td>{new Date(item.createdAt).toDateString()}</td>
+                        <td>
+                          {' '}
+                          {language == 'fr'
+                            ? titleCase(new Date(item.createdAt).toLocaleDateString('fr-FR', options))
+                            : new Date(item.createdAt).toDateString()}
+                        </td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
