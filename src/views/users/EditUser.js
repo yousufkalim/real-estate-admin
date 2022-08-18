@@ -43,6 +43,9 @@ const EditUser = ({ openModal, handleModal, user, setUser, getUsers }) => {
     }
 
     api('put', `/investors/${user._id}`, user).then((res) => {
+      if (!res.success) {
+        return toast.error(`${t(res.message)}`);
+      }
       toast.success(`${t('User edited successfully')}`);
       getUsers();
       handleModal();
