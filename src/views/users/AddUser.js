@@ -41,7 +41,10 @@ const AddUser = ({ openModal, handleModal, getUsers }) => {
     }
     user.phone = phone;
     api('post', '/investors', user).then((res) => {
-      toast.success(`${t('User added successfully')}`);
+      if (!res.success) {
+        return toast.error(`${t(res.message)}`);
+      }
+      toast.success(`${t(res.message)}`);
       getUsers();
       handleModal();
     });

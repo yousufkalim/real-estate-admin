@@ -140,10 +140,17 @@ i18n
           'Phone already associated with another user': 'Phone already associated with another user',
           'Internal server error': 'Internal server error',
           'Request failed with status code 500': 'Request failed with status code 500',
+          'User Added': 'User Added',
+          'User Actived': 'User Actived',
+          'Phone Number is Already Associated with another User': 'Phone Number is Already Associated with another User',
         },
       },
       fr: {
         translations: {
+          'Phone Number is Already Associated with another User':
+            'le numéro de téléphone est déjà associé à un autre utilisateur',
+          'User Actived': "activé par l'utilisateur",
+          'User Added': 'Utilisateur ajouté',
           'Phone Number is already taken': 'le numéro de téléphone est déjà pris',
           'Request failed with status code 500': "la demande a échoué avec le code d'état 500",
           'Phone already associated with another user': 'téléphone déjà associé à un autre utilisateur',
