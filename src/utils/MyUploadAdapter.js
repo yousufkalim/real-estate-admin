@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from 'axios';
+import { baseUrl, url } from '../config';
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -10,17 +11,14 @@ class MyUploadAdapter {
       (file) =>
         new Promise((resolve, reject) => {
           const formData = new FormData();
-          formData.append("image", file);
+          formData.append('image', file);
 
-          axios
-            .post(`${process.env.REACT_APP_SERVER_URL}/images`, formData)
-            .then((res) => {
-              console.log(res);
-              resolve({
-                default:
-                  process.env.REACT_APP_SERVER_MEDIA_URL + res.data.image,
-              });
+          axios.post(`${baseUrl}/images`, formData).then((res) => {
+            console.log(res);
+            resolve({
+              default: url + res.data.image,
             });
+          });
         })
     );
   }

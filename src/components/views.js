@@ -1,10 +1,11 @@
-const View = ({ url }) => {
+import { url } from '../config';
+const View = ({ uri }) => {
   return (
     <>
-      {url && (
-        <a href={process.env.REACT_APP_SERVER_MEDIA_URL + url} target="_blank">
+      {uri && (
+        <a href={url + uri} target='_blank'>
           &nbsp;
-          <i className="fa fa-eye" />
+          <i className='fa fa-eye' />
         </a>
       )}
     </>
